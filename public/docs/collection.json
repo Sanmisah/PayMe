@@ -1,0 +1,167 @@
+{
+    "variable": [
+        {
+            "id": "baseUrl",
+            "key": "baseUrl",
+            "type": "string",
+            "name": "string",
+            "value": "http:\/\/localhost"
+        }
+    ],
+    "info": {
+        "name": "JP Legal - Advocates & Legal Consultants",
+        "_postman_id": "067a8783-d814-436e-9644-457caafe18e5",
+        "description": "",
+        "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
+    },
+    "item": [
+        {
+            "name": "Authentication",
+            "description": "\nAPI endpoints for managing authentication",
+            "item": [
+                {
+                    "name": "Log in the user.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/login",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/auth\/login"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"email\":\"testuser@example.com\",\"password\":\"secret\"}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n \"token\": \"eyJ0eXA...\",\n \"token_type\": \"Bearer\",\n}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Candidate",
+            "description": "\nAPI endpoints for managing candidates",
+            "item": [
+                {
+                    "name": "Request Candidate Status",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/candidate",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/candidate"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"application_date\":\"10\\\/04\\\/2022\",\"codes\":\"ACT152ACT3\",\"name\":\"Amar\",\"father_name\":\"Guddu\",\"dob\":\"16\\\/04\\\/1981\",\"address\":\"Parvathi Nilaya, 1st Main, Z Block, Sharma Nagar, Delhi - 100001\"}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n\"status\": true,\n\"message\": \"Candidate found successfully!\",\n\"data\": {\n\"application_date\": \"13\/04\/2023\",\n\"ref_no\": \"b0260c4d-699f-4149-ab3b-478d346fd44c\",\n\"codes\": \"Sanmisha\",\n\"name\": \"Sanjeev\",\n\"father_name\": \"Jayant\",\n\"dob\": \"16\/04\/1981\",\n\"address\": \"Dombivali\",\n\"status\": \"Pending\"\n}\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Display Candidate Status",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/candidate\/:refNo",
+                            "query": [
+                                {
+                                    "key": "refNo",
+                                    "value": "b0260c4d-699f-4149-ab3b-478d346fd44c",
+                                    "description": "Referenect No of the Candidate.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/candidate\/:refNo?refNo=b0260c4d-699f-4149-ab3b-478d346fd44c",
+                            "variable": [
+                                {
+                                    "id": "refNo",
+                                    "key": "refNo",
+                                    "value": "1",
+                                    "description": ""
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n\"status\": true,\n\"message\": \"Candidate found successfully!\",\n\"data\": {\n\"application_date\": \"13\/04\/2023\",\n\"ref_no\": \"b0260c4d-699f-4149-ab3b-478d346fd44c\",\n\"codes\": \"Sanmisha\",\n\"name\": \"Sanjeev\",\n\"father_name\": \"Jayant\",\n\"dob\": \"16\/04\/1981\",\n\"address\": \"Dombivali\",\n\"status\": \"Pending\"\n}\n}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "key",
+                "value": null,
+                "type": "string"
+            }
+        ]
+    }
+}

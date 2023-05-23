@@ -1,0 +1,63 @@
+name: Authentication
+description: |-
+
+  API endpoints for managing authentication
+endpoints:
+  -
+    httpMethods:
+      - POST
+    uri: api/auth/login
+    metadata:
+      groupName: Authentication
+      groupDescription: |-
+
+        API endpoints for managing authentication
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Log in the user.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      email:
+        name: email
+        description: 'The email of the  user.'
+        required: true
+        example: testuser@example.com
+        type: string
+        custom: []
+      password:
+        name: password
+        description: 'The password of the  user.'
+        required: true
+        example: secret
+        type: string
+        custom: []
+    cleanBodyParameters:
+      email: testuser@example.com
+      password: secret
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+           "token": "eyJ0eXA...",
+           "token_type": "Bearer",
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []

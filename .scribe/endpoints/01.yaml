@@ -1,0 +1,173 @@
+name: Candidate
+description: |-
+
+  API endpoints for managing candidates
+endpoints:
+  -
+    httpMethods:
+      - POST
+    uri: api/candidate
+    metadata:
+      groupName: Candidate
+      groupDescription: |-
+
+        API endpoints for managing candidates
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Request Candidate Status'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      application_date:
+        name: application_date
+        description: 'dd/mm/yyyy format.'
+        required: true
+        example: 10/04/2022
+        type: string
+        custom: []
+      codes:
+        name: codes
+        description: 'Codes for the Candidate.'
+        required: true
+        example: ACT152ACT3
+        type: string
+        custom: []
+      name:
+        name: name
+        description: 'Name of the Candidate.'
+        required: true
+        example: Amar
+        type: string
+        custom: []
+      father_name:
+        name: father_name
+        description: 'Candidate Father name.'
+        required: true
+        example: Guddu
+        type: string
+        custom: []
+      dob:
+        name: dob
+        description: 'dd/mm/yyyy format.'
+        required: true
+        example: 16/04/1981
+        type: string
+        custom: []
+      address:
+        name: address
+        description: 'Candidate Address.'
+        required: true
+        example: 'Parvathi Nilaya, 1st Main, Z Block, Sharma Nagar, Delhi - 100001'
+        type: string
+        custom: []
+    cleanBodyParameters:
+      application_date: 10/04/2022
+      codes: ACT152ACT3
+      name: Amar
+      father_name: Guddu
+      dob: 16/04/1981
+      address: 'Parvathi Nilaya, 1st Main, Z Block, Sharma Nagar, Delhi - 100001'
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+          "status": true,
+          "message": "Candidate found successfully!",
+          "data": {
+          "application_date": "13/04/2023",
+          "ref_no": "b0260c4d-699f-4149-ab3b-478d346fd44c",
+          "codes": "Sanmisha",
+          "name": "Sanjeev",
+          "father_name": "Jayant",
+          "dob": "16/04/1981",
+          "address": "Dombivali",
+          "status": "Pending"
+          }
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/candidate/{refNo}'
+    metadata:
+      groupName: Candidate
+      groupDescription: |-
+
+        API endpoints for managing candidates
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Display Candidate Status'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      refNo:
+        name: refNo
+        description: ''
+        required: true
+        example: 1
+        type: integer
+        custom: []
+    cleanUrlParameters:
+      refNo: 1
+    queryParameters:
+      refNo:
+        name: refNo
+        description: 'Referenect No of the Candidate.'
+        required: true
+        example: b0260c4d-699f-4149-ab3b-478d346fd44c
+        type: string
+        custom: []
+    cleanQueryParameters:
+      refNo: b0260c4d-699f-4149-ab3b-478d346fd44c
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+          "status": true,
+          "message": "Candidate found successfully!",
+          "data": {
+          "application_date": "13/04/2023",
+          "ref_no": "b0260c4d-699f-4149-ab3b-478d346fd44c",
+          "codes": "Sanmisha",
+          "name": "Sanjeev",
+          "father_name": "Jayant",
+          "dob": "16/04/1981",
+          "address": "Dombivali",
+          "status": "Pending"
+          }
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []

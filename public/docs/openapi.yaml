@@ -1,0 +1,241 @@
+openapi: 3.0.3
+info:
+  title: 'JP Legal - Advocates & Legal Consultants'
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost'
+paths:
+  /api/auth/login:
+    post:
+      summary: 'Log in the user.'
+      operationId: logInTheUser
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n \"token\": \"eyJ0eXA...\",\n \"token_type\": \"Bearer\",\n}"
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'The email of the  user.'
+                  example: testuser@example.com
+                password:
+                  type: string
+                  description: 'The password of the  user.'
+                  example: secret
+              required:
+                - email
+                - password
+      security: []
+  /api/candidate:
+    post:
+      summary: 'Request Candidate Status'
+      operationId: requestCandidateStatus
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: 'Candidate found successfully!'
+                  data:
+                    application_date: 13/04/2023
+                    ref_no: b0260c4d-699f-4149-ab3b-478d346fd44c
+                    codes: Sanmisha
+                    name: Sanjeev
+                    father_name: Jayant
+                    dob: 16/04/1981
+                    address: Dombivali
+                    status: Pending
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Candidate found successfully!'
+                  data:
+                    type: object
+                    properties:
+                      application_date:
+                        type: string
+                        example: 13/04/2023
+                      ref_no:
+                        type: string
+                        example: b0260c4d-699f-4149-ab3b-478d346fd44c
+                      codes:
+                        type: string
+                        example: Sanmisha
+                      name:
+                        type: string
+                        example: Sanjeev
+                      father_name:
+                        type: string
+                        example: Jayant
+                      dob:
+                        type: string
+                        example: 16/04/1981
+                      address:
+                        type: string
+                        example: Dombivali
+                      status:
+                        type: string
+                        example: Pending
+      tags:
+        - Candidate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                application_date:
+                  type: string
+                  description: 'dd/mm/yyyy format.'
+                  example: 10/04/2022
+                codes:
+                  type: string
+                  description: 'Codes for the Candidate.'
+                  example: ACT152ACT3
+                name:
+                  type: string
+                  description: 'Name of the Candidate.'
+                  example: Amar
+                father_name:
+                  type: string
+                  description: 'Candidate Father name.'
+                  example: Guddu
+                dob:
+                  type: string
+                  description: 'dd/mm/yyyy format.'
+                  example: 16/04/1981
+                address:
+                  type: string
+                  description: 'Candidate Address.'
+                  example: 'Parvathi Nilaya, 1st Main, Z Block, Sharma Nagar, Delhi - 100001'
+              required:
+                - application_date
+                - codes
+                - name
+                - father_name
+                - dob
+                - address
+      security: []
+  '/api/candidate/{refNo}':
+    get:
+      summary: 'Display Candidate Status'
+      operationId: displayCandidateStatus
+      description: ''
+      parameters:
+        -
+          in: query
+          name: refNo
+          description: 'Referenect No of the Candidate.'
+          example: b0260c4d-699f-4149-ab3b-478d346fd44c
+          required: true
+          schema:
+            type: string
+            description: 'Referenect No of the Candidate.'
+            example: b0260c4d-699f-4149-ab3b-478d346fd44c
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: 'Candidate found successfully!'
+                  data:
+                    application_date: 13/04/2023
+                    ref_no: b0260c4d-699f-4149-ab3b-478d346fd44c
+                    codes: Sanmisha
+                    name: Sanjeev
+                    father_name: Jayant
+                    dob: 16/04/1981
+                    address: Dombivali
+                    status: Pending
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Candidate found successfully!'
+                  data:
+                    type: object
+                    properties:
+                      application_date:
+                        type: string
+                        example: 13/04/2023
+                      ref_no:
+                        type: string
+                        example: b0260c4d-699f-4149-ab3b-478d346fd44c
+                      codes:
+                        type: string
+                        example: Sanmisha
+                      name:
+                        type: string
+                        example: Sanjeev
+                      father_name:
+                        type: string
+                        example: Jayant
+                      dob:
+                        type: string
+                        example: 16/04/1981
+                      address:
+                        type: string
+                        example: Dombivali
+                      status:
+                        type: string
+                        example: Pending
+      tags:
+        - Candidate
+      security: []
+    parameters:
+      -
+        in: path
+        name: refNo
+        description: ''
+        example: 1
+        required: true
+        schema:
+          type: integer
+tags:
+  -
+    name: Authentication
+    description: "\nAPI endpoints for managing authentication"
+  -
+    name: Candidate
+    description: "\nAPI endpoints for managing candidates"
+components:
+  securitySchemes:
+    default:
+      type: http
+      scheme: bearer
+      description: ''
+security:
+  -
+    default: []
