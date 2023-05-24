@@ -3,9 +3,9 @@
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
         <div class="sidebar-brand-icon">
-        <i class="fa fa-balance-scale"></i>
+        <i class="fa fa-money"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">JP Legal</div>
+        <div class="sidebar-brand-text mx-3">Pay Me</div>
     </a>
 
     <!-- Divider -->
@@ -30,14 +30,16 @@
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#taTpDropDown"
             aria-expanded="true" aria-controls="taTpDropDown">
-            <i class="fas fa-user-alt"></i>
+            <i class="fas fa-file-alt"></i>
             <span>Masters</span>
         </a>
         <div id="taTpDropDown" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Masters:</h6>
                 <a class="collapse-item" href="{{ route('areas.index') }}">Area</a>
+                @hasrole('Admin')
                 <a class="collapse-item" href="{{ route('agents.index') }}">Agents</a>
+                @endhasrole
             </div>
         </div>
     </li>
@@ -54,13 +56,14 @@
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#transactionDropDown"
             aria-expanded="true" aria-controls="transactionDropDown">
-            <i class="fas fa-user-alt"></i>
+            <i class="fas fa-file-alt"></i>
             <span>Transactions</span>
         </a>
         <div id="transactionDropDown" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Transactions:</h6>
                 <a class="collapse-item" href="{{ route('loans.index') }}">Loans</a>
+                <a class="collapse-item" href="{{ route('loan_repayments.index') }}">Loan Repayments</a>
             </div>
         </div>
     </li>

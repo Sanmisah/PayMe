@@ -33,14 +33,12 @@ Route::prefix('profile')->name('profile.')->middleware('auth')->group(function()
 
 // Candidates
 Route::middleware('auth:sanctum')->group( function () {
-    Route::get('candidates/{candidate}/report',    [App\Http\Controllers\CandidateController::class, 'report']);
-    Route::get('candidates/import', [App\Http\Controllers\CandidateController::class, 'import'])->name('candidates.import');
-    Route::get('candidates/download', [App\Http\Controllers\CandidateController::class, 'download'])->name('candidates.download');
-    Route::post('candidates/upload', [App\Http\Controllers\CandidateController::class, 'upload'])->name('candidates.upload');
-    Route::resource('/candidates', App\Http\Controllers\CandidateController::class);
+ 
     Route::resource('/areas', App\Http\Controllers\AreaController::class);
     Route::resource('/agents', App\Http\Controllers\AgentController::class);
     Route::resource('/loans', App\Http\Controllers\LoanController::class);
+    Route::resource('/loan_repayments', App\Http\Controllers\LoanRepaymentController::class);
+    Route::get('/loan_repayments/collections/{id}', [App\Http\Controllers\LoanRepaymentController::class, 'collections']);
 });
 
 

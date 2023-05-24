@@ -5,14 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Loan;
 use App\Models\Area;
-use App\Models\Agent;
+use App\Models\User;
+use App\Models\LoanRepayment;
+use Carbon\Carbon;
 
 class LoanController extends Controller
 {
     
     public function index()
     {
-        $loans = Loan::paginate(20);
+        $loans = Loan::with('Agent')->paginate(20);
         return view('loans.index', compact('loans'));
     }
 
@@ -20,10 +22,10 @@ class LoanController extends Controller
     public function create()
     {
         $areas = Area::all()->pluck('area', 'id');
-        $agents = Agent::all()->pluck('name', 'id');
+        $agents = User::where(['role_id'=>2])->pluck('first_name', 'id');
         return view('loans.create')->with([
             'areas' => $areas,
-            'agents' => $agents
+            'agents' => $agents,
         ]);
     }
 
@@ -34,16 +36,39 @@ class LoanController extends Controller
         $request->validate([
             'name'=>'required',
             'mobile_no'=>'required|numeric|digits:10',
-            'alternative_no'=>'required|numeric|digits:10',
+            'alternative_no'=>'numeric|digits:10',
             'contact_person'=>'required',
-            'contact_person_no'=>'required',
+            'contact_person_no'=>'required|numeric|digits:10',
             'area_id'=>'required',
             'agent_id'=>'required',
+            'loan_amount'=>'required|numeric',
+            'interest_rate'=>'required|numeric',
+            'loan_date'=>'required',
+            'emi_day'=>'required|numeric',
+            'period'=>'required|numeric',
 
         ]);
 
+        $interestAmount = $input['loan_amount']*$input['interest_rate']/100;
 
-        Loan::create($input);
+        $month = Carbon::createFromFormat('Y-m-d', $input['loan_date'])->format('m');
+        $year = Carbon::createFromFormat('Y-m-d', $input['loan_date'])->format('Y');
+
+        $date = $year.'-'.$month.'-'.$input['emi_day'];
+        $date = Carbon::createFromFormat('Y-m-d', $date);
+
+        $loan = Loan::create($input);
+
+        for($i = 1; $i<=$input['period']; $i++){
+            $date = $date->addMonth(1);
+            LoanRepayment::create([
+                'loan_id' => $loan->id,
+                'interest_amount' => $interestAmount,
+                'payment_date' => $date,
+            ]);              
+        }
+
+
         return redirect()->route('loans.index')->with(['success'=>'Record has been saved successfully']);
     }
 
@@ -56,8 +81,8 @@ class LoanController extends Controller
     
     public function edit(Loan $loan)
     {
-        $areas = Area::all()->pluck(['area', 'id']);
-        $agents = Agent::all()->pluck(['name', 'id']);
+        $areas = Area::all()->pluck('area', 'id');
+        $agents = Agent::all()->pluck('name', 'id');
         return view('loans.edit')->with([
             'loan' => $loan,
             'areas' => $areas,
@@ -71,14 +96,69 @@ class LoanController extends Controller
         $input = $request->all();
         $request->validate([
             'name'=>'required',
-            'mobile_no'=>'required',
-            'alternative_no'=>'required',
-            'address'=>'required',
+            'mobile_no'=>'required|numeric|digits:10',
+            'alternative_no'=>'numeric|digits:10',
             'contact_person'=>'required',
-            'contact_person_no'=>'required',
+            'contact_person_no'=>'required|numeric|digits:10',
+            'area_id'=>'required',
+            'agent_id'=>'required',
+            'loan_amount'=>'required|numeric',
+            'interest_rate'=>'required|numeric',
+            'loan_date'=>'required',
+            'emi_day'=>'required|numeric',
+            'period'=>'required|numeric',
+
         ]);
 
-        $loan->update($input);
+        $loan->load(['LoanRepayments']);
+
+
+        $loan->name = $input['name'];
+        $loan->mobile_no = $input['mobile_no'];
+        $loan->alternative_no = $input['alternative_no'];
+        $loan->area_id = $input['area_id'];
+        $loan->agent_id = $input['agent_id'];
+        $loan->contact_person = $input['contact_person'];
+        $loan->contact_person_no = $input['contact_person_no'];
+        $loan->loan_amount = $input['loan_amount'];
+        $loan->interest_rate = $input['interest_rate'];
+        $loan->loan_date = $input['loan_date'];
+        $loan->emi_day = $input['emi_day'];
+        $loan->period = $input['period'];
+        if($input['address']){
+            $loan->address = $input['address'];
+        }
+        if($input['email']){
+            $loan->address = $input['email'];
+        }
+        if($input['contact_person_email']){
+            $loan->address = $input['contact_person_email'];
+        }
+
+        dd($loan);
+
+
+        $loanRepayments = [];
+        $interestAmount = $input['loan_amount']*$input['interest_rate']/100;
+
+        $month = Carbon::createFromFormat('Y-m-d', $input['loan_date'])->format('m');
+        $year = Carbon::createFromFormat('Y-m-d', $input['loan_date'])->format('Y');
+
+        $date = $year.'-'.$month.'-'.$input['emi_day'];
+        $date = Carbon::createFromFormat('Y-m-d', $date);
+
+
+        for($i = 1; $i<=$input['period']; $i++){
+            $date = $date->addMonth(1);
+            LoanRepayment::create([
+                'loan_id' => $loan->id,
+                'interest_amount' => $interestAmount,
+                'payment_date' => $date,
+            ]);              
+        }
+
+        $loan->save();
+
         return redirect()->route('loans.index')->with(['success'=>'Record has been updated successfully']);
     }
 

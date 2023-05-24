@@ -27,16 +27,28 @@
                 @method('PUT')
                 <div class="form-group row">
                     <div class="col-sm-4 mb-3 mb-sm-0">
-                    <label> <span style="color:red;">*</span>Agent Name</label>
+                        <label> <span style="color:red;">*</span>First Name</label>
                         <input 
                             type="text" 
-                            class="form-control form-control-user @error('name') is-invalid @enderror" 
+                            class="form-control form-control-user @error('first_name') is-invalid @enderror" 
                             id="name"
-                            placeholder="Name" 
-                            name="name" 
-                            value="{{ old('name') ? old('name')  : $agent->name }}">
+                            name="first_name" 
+                            value="{{ old('first_name') ? old('first_name')  : $agent->first_name }}">
 
-                        @error('name')
+                        @error('first_name')
+                            <span class="text-danger">{{$message}}</span>
+                        @enderror
+                    </div>
+                    <div class="col-sm-4 mb-3 mb-sm-0">
+                        <label> <span style="color:red;">*</span>Last Name</label>
+                        <input 
+                            type="text" 
+                            class="form-control form-control-user @error('last_name') is-invalid @enderror" 
+                            id="last_name"
+                            name="last_name" 
+                            value="{{ old('last_name') ? old('last_name')  : $agent->last_name }}">
+
+                        @error('last_name')
                             <span class="text-danger">{{$message}}</span>
                         @enderror
                     </div>
@@ -44,29 +56,17 @@
                     <label><span style="color:red;">*</span>Mobile No</label>
                         <input 
                             type="text" 
-                            class="form-control form-control-user @error('mobile_no') is-invalid @enderror" 
-                            id="mobile_no"
-                            name="mobile_no" 
-                            value="{{ old('mobile_no') ? old('mobile_no') : $agent->mobile_no  }}">
+                            class="form-control form-control-user @error('mobile_number') is-invalid @enderror" 
+                            id="mobile_number"
+                            name="mobile_number" 
+                            value="{{ old('mobile_number') ? old('mobile_number') : $agent->mobile_number  }}">
 
-                        @error('mobile_no')
+                        @error('mobile_number')
                             <span class="text-danger">{{$message}}</span>
                         @enderror
                     </div>
                     
-                    <div class="col-sm-4 mb-3 mb-sm-0">
-                    <label> <span style="color:red;">*</span>Alternative Mobile no</label>
-                        <input 
-                            type="text" 
-                            class="form-control form-control-user @error('alternative_no') is-invalid @enderror" 
-                            id="alternativeNo"
-                            name="alternative_no" 
-                            value="{{ old('alternative_no') ? old('alternative_no') : $agent->alternative_no  }}">
-
-                        @error('alternative_no')
-                            <span class="text-danger">{{$message}}</span>
-                        @enderror
-                    </div>
+                   
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-4 mb-3 mb-sm-0">
@@ -84,18 +84,18 @@
                         @enderror
                     </div>
                     <div class="col-sm-4 mb-3 mb-sm-0">
-                    <label>Address</label>
+                        <label> Alternative Mobile no</label>
                         <input 
                             type="text" 
-                            class="form-control form-control-user @error('address') is-invalid @enderror" 
-                            id="address"
-                            name="address" 
-                            value="{{ old('address') ? old('address') : $agent->address }}">
+                            class="form-control form-control-user @error('alternative_no') is-invalid @enderror" 
+                            id="alternativeNo"
+                            name="alternative_no" 
+                            value="{{ old('alternative_no') ? old('alternative_no') : $agent->alternative_no  }}">
 
-                        @error('address')
+                        @error('alternative_no')
                             <span class="text-danger">{{$message}}</span>
                         @enderror
-                    </div>
+                    </div>                  
                     
                   
                 </div>

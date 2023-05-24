@@ -9,15 +9,22 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\LoanRepayment;
 
-class Agent extends Model
+class Collection extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name',
-        'mobile_no',
-        'email',
-        'alternative_no',
-        'address'
+        'loan_repayment_id',
+        'payment_id',
+        'travelling_charges',
+        'interest_received_amount',
+        'loan_received_amount',
+        'payment_mode',
+        'utr_no'
     ];
+
+    public function LoanRepayments(){
+        return $this->belongsTo(LoanRepayment::class);
+    }
 }

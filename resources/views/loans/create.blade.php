@@ -8,7 +8,7 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Add Loan</h1>
+        <h1 class="h3 mb-0 text-gray-800">Loans</h1>
         <a href="{{route('loans.index')}}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                 class="fas fa-arrow-left fa-sm text-white-50"></i> Back</a>
     </div>
@@ -25,7 +25,7 @@
             <form method="POST" action="{{route('loans.store')}}">
                 @csrf
                 <div class="form-group row">
-                    <div class="col-sm-4 mb-3 mb-sm-0">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
                     <label><span style="color:red;">*</span> Name</label>
                         <input 
                             type="text" 
@@ -39,7 +39,7 @@
                             <span class="text-danger">{{$message}}</span>
                         @enderror
                     </div>
-                    <div class="col-sm-4 mb-3 mb-sm-0">
+                    <div class="col-sm-3 mb-3 mb-sm-0">
                     <label><span style="color:red;">*</span>Mobile No</label>
                         <input 
                             type="text" 
@@ -53,8 +53,8 @@
                         @enderror
                     </div>
                     
-                    <div class="col-sm-4 mb-3 mb-sm-0">
-                    <label> <span style="color:red;">*</span>Alternative Mobile no</label>
+                    <div class="col-sm-3 mb-3 mb-sm-0">
+                    <label> Alternative Mobile no</label>
                         <input 
                             type="text" 
                             class="form-control form-control-user @error('alternative_no') is-invalid @enderror" 
@@ -127,7 +127,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-sm-4 mb-3 mb-sm-0">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
                     <label><span style="color:red;">*</span> Contact Person Name</label>
                         <input 
                             type="text" 
@@ -139,7 +139,7 @@
                             <span class="text-danger">{{$message}}</span>
                         @enderror
                     </div>
-                    <div class="col-sm-4 mb-3 mb-sm-0">
+                    <div class="col-sm-3 mb-3 mb-sm-0">
                     <label><span style="color:red;">*</span>Contact Person Mobile No</label>
                         <input 
                             type="text" 
@@ -152,8 +152,8 @@
                         @enderror
                     </div>
                     
-                    <div class="col-sm-4 mb-3 mb-sm-0">
-                    <label><span style="color:red;">*</span>Contact Person Email</label>
+                    <div class="col-sm-3 mb-3 mb-sm-0">
+                        <label>Contact Person Email</label>
                         <input 
                             type="text" 
                             class="form-control form-control-user @error('contact_person_email') is-invalid @enderror" 
@@ -161,6 +161,74 @@
                             value="{{ old('contact_person_email')  }}">
 
                         @error('contact_person_email')
+                            <span class="text-danger">{{$message}}</span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-4 mb-3 mb-sm-0">
+                        <label><span style="color:red;">*</span>Loan Date</label>
+                        <input 
+                            type="date" 
+                            class="form-control form-control-user @error('loan_date') is-invalid @enderror" 
+                            name="loan_date" 
+                            value="{{ old('loan_date')  }}">
+
+                        @error('loan_date')
+                            <span class="text-danger">{{$message}}</span>
+                        @enderror
+                    </div>
+                    <div class="col-sm-4 mb-3 mb-sm-0">
+                        <label><span style="color:red;">*</span>Loan Amount</label>
+                        <input 
+                            type="text" 
+                            class="form-control form-control-user @error('loan_amount') is-invalid @enderror" 
+                            name="loan_amount" 
+                            value="{{ old('loan_amount')  }}">
+
+                        @error('loan_amount')
+                            <span class="text-danger">{{$message}}</span>
+                        @enderror
+                    </div>
+                    <div class="col-sm-4 mb-3 mb-sm-0">
+                        <label><span style="color:red;">*</span>EMI Day</label>
+                        <select name="emi_day" id=""  class="form-control form-control-user @error('emi_day') is-invalid @enderror" >
+                            <option value="">Please Select</option>
+                            <?php $arr = range(1,28); ?>     
+                            @foreach($arr as $a)
+                            <option value="{{ $a }}">{{ $a }}</option>
+                            @endforeach
+                            
+                        </select>
+
+                        @error('emi_day')
+                            <span class="text-danger">{{$message}}</span>
+                        @enderror
+                    </div>                   
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-4 mb-3 mb-sm-0">
+                        <label><span style="color:red;">*</span>Interest Rate Per Months</label>
+                        <input 
+                            type="text" 
+                            class="form-control form-control-user @error('interest_rate') is-invalid @enderror" 
+                            name="interest_rate" 
+                            value="{{ old('interest_rate')  }}">
+
+                        @error('interest_rate')
+                            <span class="text-danger">{{$message}}</span>
+                        @enderror
+                    </div>                   
+
+                    <div class="col-sm-4 mb-3 mb-sm-0">
+                        <label><span style="color:red;">*</span>Period In Months</label>
+                        <input 
+                            type="text" 
+                            class="form-control form-control-user @error('period') is-invalid @enderror" 
+                            name="period" 
+                            value="{{ old('period')  }}">
+
+                        @error('period')
                             <span class="text-danger">{{$message}}</span>
                         @enderror
                     </div>

@@ -38,8 +38,8 @@
                     <tbody>
                         @foreach ($agents as $agent)
                             <tr>
-                               <td>{{$agent->name }}</td>
-                               <td>{{$agent->mobile_no }}</td>
+                               <td>{{$agent->first_name }} &nbsp; {{$agent->last_name }}</td>
+                               <td>{{$agent->mobile_number }}</td>
                                <td>{{$agent->alternative_no }}</td>
                                <td>{{$agent->email }}</td>
                                 <td style="display:flex;">                                   

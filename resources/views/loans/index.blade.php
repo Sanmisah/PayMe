@@ -28,24 +28,30 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+                            <th>Loan Date </th>
+                            <th>Loan No </th>
+                            <th>Agent Name </th>
                             <th>Name </th>
                             <th>Mobile No</th>
-                            <th>Alternative Mobile No</th>
                             <th>Contact Person</th>
+                            <th>Loan Amount</th>
                             <th width="10%">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($loans as $loan)
                             <tr>
+                                <td>{{$loan->loan_date }}</td>
+                                <td>{{$loan->loan_no }}</td>
+                                <td>{{$loan->Agent->first_name }}</td>
                                <td>{{$loan->name }}</td>
-                               <td>{{$loan->mobile_no }}</td>
-                               <td>{{$loan->alternative_no }}</td>
+                               <td>{{$loan->mobile_no }} </td>
                                <td>{{$loan->contact_person }}</td>
+                               <td>{{ $loan->loan_amount }} <br> at {{ $loan->interest_rate }}% Interest Rate</td>
                                 <td style="display:flex;">                                   
                                    
-                                    <a href="{{ route('loans.edit', ['loan' => $loan->id]) }}" class="btn btn-primary btn-sm m-2">
-                                        <i class="fa fa-pen"></i>
+                                    <a href="{{ route('loan_repayments.show', ['loan_repayment' => $loan->id]) }}" class="btn btn-primary btn-sm m-2">
+                                        Details
                                     </a>
                                   
                                     <form action="{{ route('loans.destroy',$loan->id) }}" method="Post" onsubmit="return confirm('Do you really want to Delete this Record')">
