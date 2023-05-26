@@ -83,7 +83,7 @@
                         @enderror
                     </div>
                     <div class="col-sm-4 mb-3 mb-sm-0">
-                    <label>Area</label>
+                        <label><span style="color:red;">*</span> Area</label>
                         <select name="area_id" class="form-control form-control-user @error('area_id') is-invalid @enderror" >
                             <option value="">Please Select</option>
                             @foreach ($areas as $id=>$area)
@@ -95,8 +95,9 @@
                             <span class="text-danger">{{$message}}</span>
                         @enderror
                     </div>
+                    @hasrole('Admin')
                     <div class="col-sm-4 mb-3 mb-sm-0">
-                    <label>Agent</label>
+                        <label>Agent</label>
                         <select name="agent_id" class="form-control form-control-user @error('agent_id') is-invalid @enderror" >
                             <option value="">Please Select</option>
                             @foreach ($agents as $id=>$agent)
@@ -107,9 +108,20 @@
                         @error('agent_id')
                             <span class="text-danger">{{$message}}</span>
                         @enderror
-                    </div>
-                    
-                  
+                    </div> 
+                    @endhasrole    
+                    @hasrole('Agent')
+                    <div class="col-sm-4 mb-3 mb-sm-0">
+                        <label>Agent</label>
+                        <select name="agent_id" class="form-control form-control-user @error('agent_id') is-invalid @enderror" >
+                            <option value="{{ Auth::user()->id }}">{{ Auth::user()->full_name  }}</option>
+                        </select>
+
+                        @error('agent_id')
+                            <span class="text-danger">{{$message}}</span>
+                        @enderror
+                    </div> 
+                    @endhasrole                  
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-12 mb-3 mb-sm-0">
@@ -140,7 +152,7 @@
                         @enderror
                     </div>
                     <div class="col-sm-3 mb-3 mb-sm-0">
-                    <label><span style="color:red;">*</span>Contact Person Mobile No</label>
+                    <label><span style="color:red;">*</span> Contact Person Mobile No</label>
                         <input 
                             type="text" 
                             class="form-control form-control-user @error('contact_person_no') is-invalid @enderror" 
@@ -167,7 +179,7 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-4 mb-3 mb-sm-0">
-                        <label><span style="color:red;">*</span>Loan Date</label>
+                        <label><span style="color:red;">*</span> Loan Date</label>
                         <input 
                             type="date" 
                             class="form-control form-control-user @error('loan_date') is-invalid @enderror" 
@@ -179,7 +191,7 @@
                         @enderror
                     </div>
                     <div class="col-sm-4 mb-3 mb-sm-0">
-                        <label><span style="color:red;">*</span>Loan Amount</label>
+                        <label><span style="color:red;">*</span> Loan Amount</label>
                         <input 
                             type="text" 
                             class="form-control form-control-user @error('loan_amount') is-invalid @enderror" 
@@ -191,7 +203,7 @@
                         @enderror
                     </div>
                     <div class="col-sm-4 mb-3 mb-sm-0">
-                        <label><span style="color:red;">*</span>EMI Day</label>
+                        <label><span style="color:red;">*</span> EMI Day</label>
                         <select name="emi_day" id=""  class="form-control form-control-user @error('emi_day') is-invalid @enderror" >
                             <option value="">Please Select</option>
                             <?php $arr = range(1,28); ?>     
@@ -208,7 +220,7 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-4 mb-3 mb-sm-0">
-                        <label><span style="color:red;">*</span>Interest Rate Per Months</label>
+                        <label><span style="color:red;">*</span> Interest Rate Per Months</label>
                         <input 
                             type="text" 
                             class="form-control form-control-user @error('interest_rate') is-invalid @enderror" 
@@ -221,7 +233,7 @@
                     </div>                   
 
                     <div class="col-sm-4 mb-3 mb-sm-0">
-                        <label><span style="color:red;">*</span>Period In Months</label>
+                        <label><span style="color:red;">*</span> Period In Months</label>
                         <input 
                             type="text" 
                             class="form-control form-control-user @error('period') is-invalid @enderror" 

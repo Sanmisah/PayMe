@@ -16,7 +16,7 @@ class Collection extends Model
     use HasFactory;
     protected $fillable = [
         'loan_repayment_id',
-        'payment_id',
+        'payment_date',
         'travelling_charges',
         'interest_received_amount',
         'loan_received_amount',

@@ -28,26 +28,28 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>Loan Date </th>
                             <th>Loan No </th>
+                            <th>Loan Date </th>
                             <th>Agent Name </th>
                             <th>Name </th>
                             <th>Mobile No</th>
                             <th>Contact Person</th>
                             <th>Loan Amount</th>
+                            <th>Balance Amount</th>
                             <th width="10%">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($loans as $loan)
                             <tr>
-                                <td>{{$loan->loan_date }}</td>
                                 <td>{{$loan->loan_no }}</td>
+                                <td>{{$loan->loan_date }}</td>
                                 <td>{{$loan->Agent->first_name }}</td>
                                <td>{{$loan->name }}</td>
                                <td>{{$loan->mobile_no }} </td>
                                <td>{{$loan->contact_person }}</td>
                                <td>{{ $loan->loan_amount }} <br> at {{ $loan->interest_rate }}% Interest Rate</td>
+                               <td>{{ $loan->balanceAmount() }}</td>
                                 <td style="display:flex;">                                   
                                    
                                     <a href="{{ route('loan_repayments.show', ['loan_repayment' => $loan->id]) }}" class="btn btn-primary btn-sm m-2">

@@ -116,22 +116,7 @@
                             <span class="text-danger">{{$message}}</span>
                         @enderror
                     </div>
-                    
-                    {{-- Form Layout --}}
-                    <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
-                        <span style="color:red;">*</span>Form Layout</label>
-                        <input 
-                            type="text" 
-                            class="form-control form-control-user @error('form_layout') is-invalid @enderror" 
-                            id="exampleFromLayout"
-                            placeholder="Form Layout" 
-                            name="form_layout" 
-                            value="{{ old('form_layout') }}">
-
-                        @error('form_layout')
-                            <span class="text-danger">{{$message}}</span>
-                        @enderror
-                    </div>
+                  
 
                 </div>
             </div>

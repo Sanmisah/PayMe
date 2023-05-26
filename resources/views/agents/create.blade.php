@@ -30,7 +30,6 @@
                         <input 
                             type="text" 
                             class="form-control form-control-user @error('first_name') is-invalid @enderror" 
-                            placeholder="first_name" 
                             name="first_name" 
                             value="{{ old('first_name')  }}">
 
@@ -43,7 +42,6 @@
                         <input 
                             type="text" 
                             class="form-control form-control-user @error('last_name') is-invalid @enderror" 
-                            placeholder="last_name" 
                             name="last_name" 
                             value="{{ old('last_name')  }}">
 

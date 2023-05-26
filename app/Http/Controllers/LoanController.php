@@ -8,6 +8,8 @@ use App\Models\Area;
 use App\Models\User;
 use App\Models\LoanRepayment;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+
 
 class LoanController extends Controller
 {
@@ -40,7 +42,6 @@ class LoanController extends Controller
             'contact_person'=>'required',
             'contact_person_no'=>'required|numeric|digits:10',
             'area_id'=>'required',
-            'agent_id'=>'required',
             'loan_amount'=>'required|numeric',
             'interest_rate'=>'required|numeric',
             'loan_date'=>'required',

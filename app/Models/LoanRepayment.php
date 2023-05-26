@@ -45,5 +45,10 @@ class LoanRepayment extends Model
     {
         return $this->hasMany(Collection::class);
     }
+
+    public function balance_amount()
+    {
+        return $this->interest_amount - $this->paid_amount;
+    }
     
 }

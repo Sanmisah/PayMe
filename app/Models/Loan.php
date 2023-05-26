@@ -59,6 +59,11 @@ class Loan extends Model
         return Carbon::parse($value)->format('d/m/Y');
     }
 
+    public function balanceAmount()
+    {
+        return $this->loan_amount - $this->paid_amount;
+    }
+
     public static function booted() :void 
     {
         static::creating(function(Loan $loan){

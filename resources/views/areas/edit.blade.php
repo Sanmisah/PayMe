@@ -29,7 +29,7 @@
 
                     {{-- area --}}
                     <div class="col-sm-6 mb-3 mb-sm-0">
-                        <span style="color:red;">*</span>area</label>
+                        <label><span style="color:red;">*</span>area</label>
                         <input 
                             type="text" 
                             class="form-control form-control-user @error('area') is-invalid @enderror" 

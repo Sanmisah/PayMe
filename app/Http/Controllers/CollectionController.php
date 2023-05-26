@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Loan;
+use Carbon\Carbon;
 
 class CollectionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function report()
+    {
+
+    }
+
+
     public function index()
     {
         //
@@ -23,15 +26,13 @@ class CollectionController extends Controller
      */
     public function create()
     {
-        //
+        $loans = Loan::all()->pluck('loan_no', 'id');
+        return view('collections.create')->with([
+            'loans' => $loans
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+   
     public function store(Request $request)
     {
         //
