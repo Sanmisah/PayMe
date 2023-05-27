@@ -50,6 +50,8 @@
 
     <!-- Bootstrap core JavaScript-->
     <script src="{{asset('js/app.js')}}"></script>
+    <script src="{{asset('js/bootstrap-inputmask.min.js')}}"></script>
+
 
 
     <!-- Custom scripts for all pages-->

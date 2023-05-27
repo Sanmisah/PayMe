@@ -12,6 +12,8 @@ use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Support\Str;
 use App\Models\Area;
 use App\Models\User;
+use Carbon\Carbon;
+
 
 class Loan extends Model
 {

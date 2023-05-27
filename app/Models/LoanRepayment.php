@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use App\Models\Area;
 use App\Models\Loan;
 use App\Models\Collection;
+use Carbon\Carbon;
 
 class LoanRepayment extends Model
 {
@@ -33,7 +34,7 @@ class LoanRepayment extends Model
 
     public function setPaymentDate($value)
     {
-        $this->attributes['loan_date'] = $value != null ? Carbon::createFromFormat('d/m/Y', $value)->format('Y-m-d') : null;
+        $this->attributes['payment_date'] = $value != null ? Carbon::createFromFormat('d/m/Y', $value)->format('Y-m-d') : null;
     }
 
     public function getPaymentDate($value)

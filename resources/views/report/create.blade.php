@@ -10,8 +10,7 @@ use Illuminate\Support\Str;
 @section('content')
 
 <div class="container-fluid">
-    <form method="POST" action="{{route('collections.report')}}">
-    @csrf             
+            
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -27,16 +26,18 @@ use Illuminate\Support\Str;
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary"></h6>
         </div>
-        <div class="card-body">
-           
+        <div class="card-body p-2"> 
+            <form method="POST" action="{{route('collections.report')}}">
+            @csrf         
 
-            <div class="form-group row">
+            <div class="form-group row m-2">
                 <div class="col-sm-3 mb-3 mb-sm-0">
                     <label>From</label>
                     <input
-                        type="date"
+                        type="text"
                         class="form-control form-control @error('from_date') is-invalid @enderror"
                         name="from_date"
+                        data-mask="99/99/9999"
                         >
                     @error('from_date')
                         <span class="text-danger">{{$message}}</span>
@@ -45,9 +46,10 @@ use Illuminate\Support\Str;
                 <div class="col-sm-3 mb-3 mb-sm-0">
                     <label>To</label>
                     <input
-                        type="date"
+                        type="text"
                         class="form-control form-control @error('to_date') is-invalid @enderror"
                         name="to_date"
+                        data-mask="99/99/9999"
                         >
                     @error('to_date')
                         <span class="text-danger">{{$message}}</span>
@@ -67,14 +69,16 @@ use Illuminate\Support\Str;
                 </div>   
                 
             </div> 
-               
-        </div>
-        {{-- Save Button --}} 
-        <button type="submit" class="btn btn-success btn-user btn-block">
-            Show
-        </button>
-
-        </form>
+            <div class="form-group row">
+                <div class="col-md-12">
+                    {{-- Save Button --}} 
+                    <button type="submit" class="btn btn-success btn-user btn-block">
+                        Show
+                    </button>
+                </div>
+            </div>
+        </form>               
+        </div>       
     </div>
 
    

@@ -48,10 +48,11 @@
                     <div class="col-sm-3 mb-3 mb-sm-0">
                     <label><span style="color:red;">*</span> Reschedule Date</label>
                         <input 
-                            type="date" 
+                            type="text" 
                             class="form-control form-control-user @error('payment_date') is-invalid @enderror" 
                             id="payment_date"
                             placeholder="payment_date" 
+                            data-mask="99/99/9999"
                             name="payment_date" 
                             value="{{ old('payment_date') ? old('payment_date') : $loan_repayment->payment_date  }}">
 

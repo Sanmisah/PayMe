@@ -118,6 +118,18 @@ class LoanRepaymentController extends Controller
             'payment_mode' => 'required',
         ]);    
         $input['loan_repayment_id'] = $id;
+
+        $amount = 0;
+        $amount += $input['interest_received_amount'];
+
+        if(!empty($input['travelling_charges'])){
+            $amount += $input['travelling_charges'];
+        }
+        if(!empty($input['loan_received_amount'])){
+            $amount += $input['loan_received_amount'];
+        }
+
+        $input['total_amount'] = $amount;
         
         Collection::create($input);
         $collection = Collection::where(['loan_repayment_id'=>$id])->get();
@@ -135,6 +147,10 @@ class LoanRepaymentController extends Controller
 
 
     }
+
+   
+
+
     
     public function destroy($id)
     {

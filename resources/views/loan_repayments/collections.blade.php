@@ -70,61 +70,22 @@
                 </div>
                 @endif
                 <div class="form-group row">
-                    <div class="col-sm-3 mb-3 mb-sm-0">
+                    <div class="col-sm-4 mb-3 mb-sm-0">
                     <label><span style="color:red;">*</span> Date</label>
                         <input 
-                            type="date" 
+                            type="text" 
                             class="form-control form-control-user @error('payment_date') is-invalid @enderror" 
                             name="payment_date" 
+                            data-mask="99/99/9999"
                         >
 
                         @error('payment_date')
                             <span class="text-danger">{{$message}}</span>
                         @enderror
                     </div>
-                    <div class="col-sm-3 mb-3 mb-sm-0">
-                        <label>Travelling Charges</label>
-                        <input 
-                            type="text" 
-                            class="form-control form-control-user @error('travelling_charges') is-invalid @enderror" 
-                            name="travelling_charges" 
-                        >
-
-                        @error('travelling_charges')
-                            <span class="text-danger">{{$message}}</span>
-                        @enderror
-                    </div>
-                    <div class="col-sm-3 mb-3 mb-sm-0">
-                        <label><span style="color:red;">*</span> Interest Received Amount</label>
-                        <input 
-                            type="text" 
-                            class="form-control form-control-user @error('interest_received_amount') is-invalid @enderror" 
-                            name="interest_received_amount"  
-                        >
-
-                        @error('interest_received_amount')
-                            <span class="text-danger">{{$message}}</span>
-                        @enderror
-                    </div>
-                    <div class="col-sm-3 mb-3 mb-sm-0">
-                        <label> Laon Received Amount </label>
-                        <input 
-                            type="text" 
-                            class="form-control form-control-user @error('loan_received_amount') is-invalid @enderror" 
-                            name="loan_received_amount"  
-                        >
-
-                        @error('loan_received_amount')
-                            <span class="text-danger">{{$message}}</span>
-                        @enderror
-                    </div>
-                   
-                  
-                </div>
-                <div class="form-group row">
-                    <div class="col-sm-3 mb-3 mb-sm-0">
-                    <label><span style="color:red;">*</span> Payment Mode</label>
-                        <select name="payment_mode" id="" class="form-control">
+                    <div class="col-sm-4 mb-3 mb-sm-0">
+                        <label><span style="color:red;">*</span> Payment Mode</label>
+                        <select name="payment_mode" id="mode" class="form-control">
                             <option value="'">Please Select</option>
                             <option value="Cash">Cash</option>
                             <option value="Bank">Bank</option>
@@ -134,7 +95,7 @@
                             <span class="text-danger">{{$message}}</span>
                         @enderror
                     </div>
-                    <div class="col-sm-3 mb-3 mb-sm-0">
+                    <div class="col-sm-4 mb-3 mb-sm-0" style="display:none;" id="utr">
                         <label>UTR No</label>
                         <input 
                             type="text" 
@@ -147,8 +108,50 @@
                         @enderror
                     </div>                 
                   
-                   
-                  
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-4 mb-3 mb-sm-0">
+                        <label>Travelling Charges</label>
+                        <input 
+                            type="number" 
+                            class="form-control form-control-user @error('travelling_charges') is-invalid @enderror" 
+                            name="travelling_charges" 
+                            default="0.00"
+                            id="travel"
+                        >
+
+                        @error('travelling_charges')
+                            <span class="text-danger">{{$message}}</span>
+                        @enderror
+                    </div>
+                    <div class="col-sm-4 mb-3 mb-sm-0">
+                        <label><span style="color:red;">*</span> Interest Received Amount</label>
+                        <input 
+                            type="number" 
+                            class="form-control form-control-user @error('interest_received_amount') is-invalid @enderror" 
+                            name="interest_received_amount"  
+                            default="0.00"
+                            id="interest"
+                        >
+
+                        @error('interest_received_amount')
+                            <span class="text-danger">{{$message}}</span>
+                        @enderror
+                    </div>
+                    <div class="col-sm-4 mb-3 mb-sm-0">
+                        <label> Laon Received Amount </label>
+                        <input 
+                            type="text" 
+                            class="form-control form-control-user @error('loan_received_amount') is-invalid @enderror" 
+                            name="loan_received_amount"  
+                            default="0.00"
+                            id="loan"
+                        >
+
+                        @error('loan_received_amount')
+                            <span class="text-danger">{{$message}}</span>
+                        @enderror
+                    </div>
                 </div>
               
 
@@ -164,4 +167,16 @@
 </div>
 
 
+@endsection
+@section('scripts')
+<script>
+    $("#mode").change(function(){
+        if($("#mode").val()== 'Bank'){
+            $("#utr").show()
+        } else {
+            $("#utr").hide()
+        }
+    });
+   
+</script>
 @endsection

@@ -40,6 +40,10 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::resource('/loan_repayments', App\Http\Controllers\LoanRepaymentController::class);
     Route::get('/loan_repayments/collections/{loan_repayment}', [App\Http\Controllers\LoanRepaymentController::class, 'collections'])->name('loan_repayments.collections');
     Route::post('/loan_repayments/collected/{id}', [App\Http\Controllers\LoanRepaymentController::class, 'collected'])->name('loan_repayments.collected');
+    Route::get('/report/loan', [App\Http\Controllers\ReportController::class, 'loan'])->name('report.loan');
+    Route::post('/report/loan', [App\Http\Controllers\ReportController::class, 'loan'])->name('report.loan');
+    Route::get('/report', [App\Http\Controllers\ReportController::class, 'create'])->name('collections');
+    Route::post('/report/report}', [App\Http\Controllers\ReportController::class, 'report'])->name('collections.report');
 });
 
 

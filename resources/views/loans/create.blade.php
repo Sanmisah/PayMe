@@ -97,7 +97,7 @@
                     </div>
                     @hasrole('Admin')
                     <div class="col-sm-4 mb-3 mb-sm-0">
-                        <label>Agent</label>
+                        <label><span style="color:red;">*</span>Agent</label>
                         <select name="agent_id" class="form-control form-control-user @error('agent_id') is-invalid @enderror" >
                             <option value="">Please Select</option>
                             @foreach ($agents as $id=>$agent)
@@ -181,9 +181,10 @@
                     <div class="col-sm-4 mb-3 mb-sm-0">
                         <label><span style="color:red;">*</span> Loan Date</label>
                         <input 
-                            type="date" 
+                            type="text" 
                             class="form-control form-control-user @error('loan_date') is-invalid @enderror" 
                             name="loan_date" 
+                            data-mask="99/99/9999"
                             value="{{ old('loan_date')  }}">
 
                         @error('loan_date')

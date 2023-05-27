@@ -122,6 +122,21 @@
                         @enderror
                     </div>
 
+                    {{-- Password --}}
+                    <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                        <span style="color:red;">*</span>Password</label>
+                        <input 
+                            type="text" 
+                            class="form-control form-control-user @error('password') is-invalid @enderror" 
+                            id="examplePassword"
+                            placeholder="Password" 
+                            name="password" 
+                            value="{{ old('password') }}">
+                        @error('password')
+                            <span class="text-danger">{{$message}}</span>
+                        @enderror
+                    </div>
+
                 </div>
             </div>
 
