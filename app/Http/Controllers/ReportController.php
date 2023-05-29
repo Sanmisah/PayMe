@@ -96,15 +96,15 @@ class ReportController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+
+
+    
+    public function receipt(Request $request)
     {
-        //
+        $input = $request->all();
+        if(!$input){
+            return view('report');
+        }
     }
 
     /**

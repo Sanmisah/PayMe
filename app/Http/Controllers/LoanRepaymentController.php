@@ -7,6 +7,7 @@ use App\Models\LoanRepayment;
 use App\Models\Loan;
 use App\Models\Collection;
 use Carbon\Carbon;
+use App\Sanmisha\Report;
 
 
 class LoanRepaymentController extends Controller
@@ -131,10 +132,14 @@ class LoanRepaymentController extends Controller
 
         $input['total_amount'] = $amount;
         
-        Collection::create($input);
+        $collect = Collection::create($input);
+        $loan_repayment = LoanRepayment::where(['id'=>$id])->with(['Loan', 'Collection'])->first();
+        $report = new Report();
+        $report->generate($loan_repayment);
+
         $collection = Collection::where(['loan_repayment_id'=>$id])->get();
         $amount = $collection->sum('interest_received_amount');
-        $loan_repayment = LoanRepayment::where(['id'=>$id])->first();
+        
         $inputs['paid_amount'] = $amount;
         $loan_repayment->update($inputs);
         $loan_repayments = LoanRepayment::where(['loan_id'=>$loan_repayment->loan_id])->get();

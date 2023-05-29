@@ -28,6 +28,7 @@
                             <th>Date </th>
                             <th>Amount</th>
                             <th>Received Amount</th>
+                            <th>Balanced Amount</th>
                             <th width="10%">Action</th>
                         </tr>
                     </thead>
@@ -38,22 +39,26 @@
                                 <td>{{$repayment->payment_date }}</td>
                                 <td>{{$repayment->interest_amount }}</td>
                                <td>{{$repayment->paid_amount }}</td>
-                                <td style="display:flex;">                                   
-                                   
-                                    <a href="{{ route('loan_repayments.edit', ['loan_repayment' => $repayment->id]) }}" class="btn btn-primary btn-sm m-2">
-                                        Postponed
-                                    </a>  
-                                    <a href="{{ route('loan_repayments.collections', ['loan_repayment' => $repayment->id]) }}" class="btn btn-primary btn-sm m-2">
-                                        Payment
-                                    </a>  
-                                    @if($repayment->log)
-                                    <?php $data = json_decode($repayment->log); ?>
-                                    <a href="#" class="btn btn-info btn-sm m-2 log" data-toggle="modal" data-target="#Modal" alt="{{ $repayment->log }}">
-                                        Log
-                                    </a>     
-                                    @endif                             
-                                  
-                                  
+                               <td>{{$repayment->balance_amount() }}</td>
+                                <td >  
+                                    <div style="display:flex;">
+                                        @if($repayment->balance_amount() > 0)                               
+                                    
+                                            <a href="{{ route('loan_repayments.edit', ['loan_repayment' => $repayment->id]) }}" class="btn btn-primary btn-sm m-2">
+                                                Postponed
+                                            </a>  
+                                            <a href="{{ route('loan_repayments.collections', ['loan_repayment' => $repayment->id]) }}" class="btn btn-primary btn-sm m-2">
+                                                Payment
+                                            </a>  
+                                        @endif
+                                        @if($repayment->log)
+                                                <?php $data = json_decode($repayment->log); ?>
+                                                <a href="#" class="btn btn-info btn-sm m-2 log" data-toggle="modal" data-target="#Modal" alt="{{ $repayment->log }}">
+                                                    Log
+                                                </a>     
+                                        @endif          
+
+                                    </div>
                                </td>
                            </tr>
                        @endforeach
