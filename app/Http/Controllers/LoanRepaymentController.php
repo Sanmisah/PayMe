@@ -19,11 +19,11 @@ class LoanRepaymentController extends Controller
         if(isset($input['date'])){
 
             $date = Carbon::createFromFormat('Y-m-d', $input['date']);
-            $repayments = LoanRepayment::with('Loan')->whereDate('payment_date', '<=', $date)->whereColumn('interest_amount', '>','paid_amount')->paginate(10);
+            $repayments = LoanRepayment::with('Loan')->whereDate('payment_date', '<=', $date)->whereColumn('interest_amount', '>','paid_amount')->paginate(20);
             return view('loan_repayments.index', compact('repayments'));
 
         } 
-        $repayments = LoanRepayment::with('Loan')->paginate(10);
+        $repayments = LoanRepayment::with('Loan')->whereColumn('interest_amount', '>','paid_amount')->paginate(20);
         return view('loan_repayments.index', compact('repayments'));
         
        
@@ -142,10 +142,19 @@ class LoanRepaymentController extends Controller
         
         $inputs['paid_amount'] = $amount;
         $loan_repayment->update($inputs);
-        $loan_repayments = LoanRepayment::where(['loan_id'=>$loan_repayment->loan_id])->get();
-        $paid_amount = $loan_repayments->sum('paid_amount');
+        $loan_repayments = LoanRepayment::where(['loan_id'=>$loan_repayment->loan_id])->pluck('id');
+        $values = $loan_repayments->implode(',', ' ');
+
+
+        $collections = Collection::whereIn('loan_repayment_id', [$values])->get();
+
+        $paid_amount =  $collections->sum('loan_received_amount');
+        
         $loan = Loan::where(['id'=>$loan_repayment->loan_id])->first();
         $loan->paid_amount = $paid_amount;
+        if(!empty($input['loan_received_amount'])){
+            $loan->loan_amount =  $loan->loan_amount- $input['loan_received_amount'];
+        }
         $loan->save();
 
         return redirect()->route('loan_repayments.index')->with('success', 'Loan Repayment has been Collected');

@@ -59,24 +59,24 @@ use Carbon\Carbon;
             <h2 align="center"><strong> Receipt </strong></h2>
         </div>	
 		<br>
-        <table  class="item" width="100%"  cellpadding="5" border='1px'> 
-            <tr border="1px">
-                <td border="1px" width="50%">
+        <table  class="item" width="100%"> 
+            <tr>
+                <td width="50%">
                     <b>Loan No: </b>{{ $loan_repayment->loan->loan_no }} <br>
                     <b>Name: </b>{{ $loan_repayment->loan->name }} <br>
                     <b>Phone No: </b>{{ $loan_repayment->loan->mobile_no }} <br>
                     <b>Agent Name: </b>{{ $loan_repayment->loan->agent->full_name }} <br>
                 </td>
-                <td border="1px" width="50%">
+                <td width="50%">
                     <b>Loan Date: </b>{{ $loan_repayment->loan->loan_date }} <br>
                     <b>Contact Person: </b>{{ $loan_repayment->loan->contact_person }} <br>
                     <b>Contact Person No: </b>{{ $loan_repayment->loan->contact_person_no }} <br>
                 </td>
 
             </tr>
-            <tr  border="1px">
-                <td  border="1px">
-                    <b>Date of Payment Schedule: </b>{{ $loan_repayment->loan->loan_date }} <br>
+            <tr >
+                <td >
+                    <b>Date of Payment Schedule: </b>{{ $loan_repayment->payment_date }} <br>
                   
                 </td>
             </tr>
@@ -101,8 +101,8 @@ use Carbon\Carbon;
                 <tr  border='1px'>
                     <td  border='1px'> {{ $collection->payment_date }}  </td>
                     <td  border='1px'> {{ $collection->interest_received_amount }}  </td>
-                    <td  border='1px'> {{ $collection->travelling_charges ? $collection->travelling_charges : '' }}  </td>
-                    <td  border='1px'> {{ $collection->loan_received_amount ? $collection->loan_received_amount : '' }}  </td>
+                    <td  border='1px'> {{ $collection->travelling_charges ? $collection->travelling_charges : '0.00' }}  </td>
+                    <td  border='1px'> {{ $collection->loan_received_amount ? $collection->loan_received_amount : '0.00' }}  </td>
                     <td  border='1px'>{{ $collection->payment_mode }} {{ ($collection->payment_mode == 'Babk') ? $collection->utr_no : '' }}</td>
                     <td  border='1px'> {{ $collection->total_amount }}  </td>
                 </tr>

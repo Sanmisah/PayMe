@@ -98,6 +98,7 @@
                     @hasrole('Admin')
                     <div class="col-sm-4 mb-3 mb-sm-0">
                         <label><span style="color:red;">*</span>Agent</label>
+
                         <select name="agent_id" class="form-control form-control-user @error('agent_id') is-invalid @enderror" >
                             <option value="">Please Select</option>
                             @foreach ($agents as $id=>$agent)
@@ -110,7 +111,7 @@
                         @enderror
                     </div> 
                     @endhasrole    
-                    @hasrole('Agent')
+                    @if(auth()->user()->roles->pluck('name')->first() != 'Admin')
                     <div class="col-sm-4 mb-3 mb-sm-0">
                         <label>Agent</label>
                         <select name="agent_id" class="form-control form-control-user @error('agent_id') is-invalid @enderror" >
@@ -121,7 +122,7 @@
                             <span class="text-danger">{{$message}}</span>
                         @enderror
                     </div> 
-                    @endhasrole                  
+                    @endif                  
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-12 mb-3 mb-sm-0">

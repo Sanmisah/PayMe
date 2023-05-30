@@ -111,20 +111,6 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-4 mb-3 mb-sm-0">
-                        <label>Travelling Charges</label>
-                        <input 
-                            type="number" 
-                            class="form-control form-control-user @error('travelling_charges') is-invalid @enderror" 
-                            name="travelling_charges" 
-                            default="0.00"
-                            id="travel"
-                        >
-
-                        @error('travelling_charges')
-                            <span class="text-danger">{{$message}}</span>
-                        @enderror
-                    </div>
-                    <div class="col-sm-4 mb-3 mb-sm-0">
                         <label><span style="color:red;">*</span> Interest Received Amount</label>
                         <input 
                             type="number" 
@@ -138,6 +124,21 @@
                             <span class="text-danger">{{$message}}</span>
                         @enderror
                     </div>
+                    <div class="col-sm-4 mb-3 mb-sm-0">
+                        <label>Travelling Charges</label>
+                        <input 
+                            type="number" 
+                            class="form-control form-control-user @error('travelling_charges') is-invalid @enderror" 
+                            name="travelling_charges" 
+                            default="0.00"
+                            id="travel"
+                        >
+
+                        @error('travelling_charges')
+                            <span class="text-danger">{{$message}}</span>
+                        @enderror
+                    </div>
+                  
                     <div class="col-sm-4 mb-3 mb-sm-0">
                         <label> Laon Received Amount </label>
                         <input 

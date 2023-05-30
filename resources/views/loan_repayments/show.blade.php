@@ -51,6 +51,11 @@
                                                 Payment
                                             </a>  
                                         @endif
+                                        @if($repayment->paid_amount > 0)
+                                            <a href="{{ env('BASE_URL', '') }}/reports/collection/{{$repayment->id}}/{{$repayment->loan->name}}.pdf" class="btn btn-primary btn-sm m-2" target="_blank">
+                                                Receipt
+                                            </a>
+                                        @endif
                                         @if($repayment->log)
                                                 <?php $data = json_decode($repayment->log); ?>
                                                 <a href="#" class="btn btn-info btn-sm m-2 log" data-toggle="modal" data-target="#Modal" alt="{{ $repayment->log }}">

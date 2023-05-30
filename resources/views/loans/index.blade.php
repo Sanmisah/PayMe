@@ -50,18 +50,18 @@
                                <td>{{$loan->contact_person }}</td>
                                <td>{{ $loan->loan_amount }} <br> at {{ $loan->interest_rate }}% Interest Rate</td>
                                <td>{{ $loan->balanceAmount() }}</td>
-                                <td style="display:flex;">                                   
-                                   
-                                    <a href="{{ route('loan_repayments.show', ['loan_repayment' => $loan->id]) }}" class="btn btn-primary btn-sm m-2">
-                                        Details
-                                    </a>
-                                  
-                                    <form action="{{ route('loans.destroy',$loan->id) }}" method="Post" onsubmit="return confirm('Do you really want to Delete this Record')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm m-2"><i class="fa fa-trash"></i></button>
-                                    </form>
-                                  
+                                <td>   
+                                    <div  style="display:flex;">
+                                        <a href="{{ route('loan_repayments.show', ['loan_repayment' => $loan->id]) }}" class="btn btn-primary btn-sm m-2">
+                                            Details
+                                        </a>
+                                    
+                                        <form action="{{ route('loans.destroy',$loan->id) }}" method="Post" onsubmit="return confirm('Do you really want to Delete this Record')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm m-2"><i class="fa fa-trash"></i></button>
+                                        </form>
+                                    </div>     
                                </td>
                            </tr>
                        @endforeach
