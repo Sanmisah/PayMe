@@ -27,7 +27,7 @@ use Illuminate\Support\Str;
             <h6 class="m-0 font-weight-bold text-primary"></h6>
         </div>
         <div class="card-body p-2"> 
-            <form method="POST" action="{{route('report.loan')}}">
+            <form method="POST" action="{{route('report.loan')}}" target="_blank">
             @csrf         
 
             <div class="form-group row m-2">                 

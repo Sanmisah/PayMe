@@ -24,79 +24,23 @@
         <div class="card-body">
             <form method="POST" action="{{route('loans.store')}}">
                 @csrf
-                <div class="form-group row">
+               
+                <div class="form-group row">                   
                     <div class="col-sm-6 mb-3 mb-sm-0">
-                    <label><span style="color:red;">*</span> Name</label>
-                        <input 
-                            type="text" 
-                            class="form-control form-control-user @error('name') is-invalid @enderror" 
-                            id="name"
-                            placeholder="Name" 
-                            name="name" 
-                            value="{{ old('name')  }}">
-
-                        @error('name')
-                            <span class="text-danger">{{$message}}</span>
-                        @enderror
-                    </div>
-                    <div class="col-sm-3 mb-3 mb-sm-0">
-                    <label><span style="color:red;">*</span>Mobile No</label>
-                        <input 
-                            type="text" 
-                            class="form-control form-control-user @error('mobile_no') is-invalid @enderror" 
-                            id="mobile_no"
-                            name="mobile_no" 
-                            value="{{ old('mobile_no')  }}">
-
-                        @error('mobile_no')
-                            <span class="text-danger">{{$message}}</span>
-                        @enderror
-                    </div>
-                    
-                    <div class="col-sm-3 mb-3 mb-sm-0">
-                    <label> Alternative Mobile no</label>
-                        <input 
-                            type="text" 
-                            class="form-control form-control-user @error('alternative_no') is-invalid @enderror" 
-                            id="alternativeNo"
-                            name="alternative_no" 
-                            value="{{ old('alternative_no')  }}">
-
-                        @error('alternative_no')
-                            <span class="text-danger">{{$message}}</span>
-                        @enderror
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-sm-4 mb-3 mb-sm-0">
-                        <label>Email</label>
-                        <input 
-                            type="text" 
-                            class="form-control form-control-user @error('email') is-invalid @enderror" 
-                            id="email"
-                            placeholder="email" 
-                            name="email" 
-                            value="{{ old('email')  }}">
-
-                        @error('email')
-                            <span class="text-danger">{{$message}}</span>
-                        @enderror
-                    </div>
-                    <div class="col-sm-4 mb-3 mb-sm-0">
-                        <label><span style="color:red;">*</span> Area</label>
-                        <select name="area_id" class="form-control form-control-user @error('area_id') is-invalid @enderror" >
+                        <label><span style="color:red;">*</span> Account</label>
+                        <select name="account_id" class="form-control form-control-user @error('account_id') is-invalid @enderror" >
                             <option value="">Please Select</option>
-                            @foreach ($areas as $id=>$area)
-                                <option value="{{ $id }}">{{ $area }}</option>
+                            @foreach ($accounts as $id=>$account)
+                                <option value="{{ $id }}">{{ $account }}</option>
                             @endforeach
                         </select>
 
-                        @error('area_id')
+                        @error('account_id')
                             <span class="text-danger">{{$message}}</span>
                         @enderror
-                    </div>
+                    </div>                  
                     @hasrole('Admin')
-                    <div class="col-sm-4 mb-3 mb-sm-0">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
                         <label><span style="color:red;">*</span>Agent</label>
 
                         <select name="agent_id" class="form-control form-control-user @error('agent_id') is-invalid @enderror" >
@@ -112,7 +56,7 @@
                     </div> 
                     @endhasrole    
                     @if(auth()->user()->roles->pluck('name')->first() != 'Admin')
-                    <div class="col-sm-4 mb-3 mb-sm-0">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
                         <label>Agent</label>
                         <select name="agent_id" class="form-control form-control-user @error('agent_id') is-invalid @enderror" >
                             <option value="{{ Auth::user()->id }}">{{ Auth::user()->full_name  }}</option>
@@ -123,63 +67,9 @@
                         @enderror
                     </div> 
                     @endif                  
-                </div>
-                <div class="form-group row">
-                    <div class="col-sm-12 mb-3 mb-sm-0">
-                    <label> Address</label>
-                        <input 
-                            type="text" 
-                            class="form-control form-control-user @error('address') is-invalid @enderror" 
-                            id="address"
-                            name="address" 
-                            value="{{ old('address')  }}">
-
-                        @error('address')
-                            <span class="text-danger">{{$message}}</span>
-                        @enderror
-                    </div>
-                </div>
+                </div>                           
                 <div class="form-group row">
                     <div class="col-sm-6 mb-3 mb-sm-0">
-                    <label><span style="color:red;">*</span> Contact Person Name</label>
-                        <input 
-                            type="text" 
-                            class="form-control form-control-user @error('contact_person') is-invalid @enderror" 
-                            name="contact_person" 
-                            value="{{ old('contact_person')  }}">
-
-                        @error('contact_person')
-                            <span class="text-danger">{{$message}}</span>
-                        @enderror
-                    </div>
-                    <div class="col-sm-3 mb-3 mb-sm-0">
-                    <label><span style="color:red;">*</span> Contact Person Mobile No</label>
-                        <input 
-                            type="text" 
-                            class="form-control form-control-user @error('contact_person_no') is-invalid @enderror" 
-                            name="contact_person_no" 
-                            value="{{ old('contact_person_no')  }}">
-
-                        @error('contact_person_no')
-                            <span class="text-danger">{{$message}}</span>
-                        @enderror
-                    </div>
-                    
-                    <div class="col-sm-3 mb-3 mb-sm-0">
-                        <label>Contact Person Email</label>
-                        <input 
-                            type="text" 
-                            class="form-control form-control-user @error('contact_person_email') is-invalid @enderror" 
-                            name="contact_person_email" 
-                            value="{{ old('contact_person_email')  }}">
-
-                        @error('contact_person_email')
-                            <span class="text-danger">{{$message}}</span>
-                        @enderror
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-sm-4 mb-3 mb-sm-0">
                         <label><span style="color:red;">*</span> Loan Date</label>
                         <input 
                             type="text" 
@@ -192,7 +82,7 @@
                             <span class="text-danger">{{$message}}</span>
                         @enderror
                     </div>
-                    <div class="col-sm-4 mb-3 mb-sm-0">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
                         <label><span style="color:red;">*</span> Loan Amount</label>
                         <input 
                             type="text" 
@@ -204,7 +94,7 @@
                             <span class="text-danger">{{$message}}</span>
                         @enderror
                     </div>
-                    <div class="col-sm-4 mb-3 mb-sm-0">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
                         <label><span style="color:red;">*</span> EMI Day</label>
                         <select name="emi_day" id=""  class="form-control form-control-user @error('emi_day') is-invalid @enderror" >
                             <option value="">Please Select</option>
@@ -219,9 +109,7 @@
                             <span class="text-danger">{{$message}}</span>
                         @enderror
                     </div>                   
-                </div>
-                <div class="form-group row">
-                    <div class="col-sm-4 mb-3 mb-sm-0">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
                         <label><span style="color:red;">*</span> Interest Rate Per Months</label>
                         <input 
                             type="text" 
@@ -234,7 +122,7 @@
                         @enderror
                     </div>                   
 
-                    <div class="col-sm-4 mb-3 mb-sm-0">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
                         <label><span style="color:red;">*</span> Period In Months</label>
                         <input 
                             type="text" 

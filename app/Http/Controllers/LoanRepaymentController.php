@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\LoanRepayment;
 use App\Models\Loan;
+use App\Models\Account;
+use App\Models\User;
 use App\Models\Collection;
 use Carbon\Carbon;
 use App\Sanmisha\Report;
@@ -15,16 +17,36 @@ class LoanRepaymentController extends Controller
    
     public function index(Request $request)
     {
+        $accounts = Account::all()->pluck('name', 'id');
+        $agents = User::where(['role_id'=>2])->pluck('first_name', 'id');
         $input = $request->all();
-        if(isset($input['date'])){
+        if(!empty($input)){
+            $request->validate([
+                'till_date' => 'required'
+            ]);
+            $conditions = [];
+            if(!empty($input['account_id'])){
+                $conditions['account_id'] = $input['account_id'];
+            }
 
-            $date = Carbon::createFromFormat('Y-m-d', $input['date']);
-            $repayments = LoanRepayment::with('Loan')->whereDate('payment_date', '<=', $date)->whereColumn('interest_amount', '>','paid_amount')->paginate(20);
-            return view('loan_repayments.index', compact('repayments'));
+            if(!empty($input['agent_id'])){
+                $conditions['agent_id'] = $input['agent_id'];
+            }
+            $date = Carbon::createFromFormat('d/m/Y', $input['till_date']);
+            $repayments = LoanRepayment::whereDate('payment_date', '<=', $date)
+                                        ->whereColumn('interest_amount', '>','paid_amount')
+                                        ->with(['Loan'=>['Agent', 'Account']])
+                                        ->whereRelation('Loan', $conditions)->orderBy('payment_date', 'asc')->paginate(20);
+            return view('loan_repayments.index', compact('repayments'))->with([
+                'accounts' => $accounts,
+                'agents' => $agents
+            ]);
 
         } 
-        $repayments = LoanRepayment::with('Loan')->whereColumn('interest_amount', '>','paid_amount')->paginate(20);
-        return view('loan_repayments.index', compact('repayments'));
+        return view('loan_repayments.index')->with([
+            'accounts' => $accounts,
+            'agents' => $agents
+        ]);
         
        
     }
@@ -62,7 +84,7 @@ class LoanRepaymentController extends Controller
      */
     public function edit(LoanRepayment $loan_repayment)
     {
-        $loan_repayment->load('Loan');
+        $loan_repayment->load(['Loan'=>['Agent', 'Account']]);
         return view('loan_repayments.edit')->with([
             'loan_repayment' => $loan_repayment
         ]);
@@ -153,7 +175,13 @@ class LoanRepaymentController extends Controller
         $loan = Loan::where(['id'=>$loan_repayment->loan_id])->first();
         $loan->paid_amount = $paid_amount;
         if(!empty($input['loan_received_amount'])){
-            $loan->loan_amount =  $loan->loan_amount- $input['loan_received_amount'];
+            $loan->loan_amount =  $loan->loan_amount- $input['loan_received_amount'];   
+            $loanRepayments = LoanRepayment::where(['loan_id'=>$loan->id])->where('paid_amount',  0)->get();
+            foreach($loanRepayments as $payment){
+                $payment->interest_amount  = $loan['loan_amount']*$loan['interest_rate']/100;    
+                $payment->save();
+            }
+
         }
         $loan->save();
 

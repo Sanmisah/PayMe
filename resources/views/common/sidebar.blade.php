@@ -37,6 +37,7 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Masters:</h6>
                 <a class="collapse-item" href="{{ route('areas.index') }}">Area</a>
+                <a class="collapse-item" href="{{ route('accounts.index') }}">Account</a>
                 @hasrole('Admin')
                 <a class="collapse-item" href="{{ route('agents.index') }}">Agents</a>
                 @endhasrole

@@ -26,13 +26,43 @@
                 <div class="col-sm-3 mb-3 mb-sm-0">
                     <label>Till Date</label>
                     <input 
-                        type="date" 
-                        class="form-control form-control-user @error('date') is-invalid @enderror" 
-                        name="date" 
+                        type="text" 
+                        class="form-control form-control-user @error('till_date') is-invalid @enderror" 
+                        name="till_date" 
+                        data-mask="99/99/9999"
                     >
+                    @error('till_date')
+                     <span class="text-danger"> {{ $message }}</span>
+                    @enderror
                 </div>
                 <div class="col-sm-3 mb-3 mb-sm-0">
-                    <label>  </label> <br>
+                    <label><span style="color:red;">*</span> Loan Holder</label>
+                    <select name="account_id" class="form-control form-control-user @error('account_id') is-invalid @enderror" >
+                        <option value="">Please Select</option>
+                        @foreach ($accounts as $id=>$account)
+                            <option value="{{ $id }}">{{ $account }}</option>
+                        @endforeach
+                    </select>
+
+                    @error('account_id')
+                        <span class="text-danger">{{$message}}</span>
+                    @enderror
+                </div>
+                <div class="col-sm-3 mb-3 mb-sm-0">
+                    <label><span style="color:red;">*</span> Agent Name</label>
+                    <select name="agent_id" class="form-control form-control-user @error('agent_id') is-invalid @enderror" >
+                        <option value="">Please Select</option>
+                        @foreach ($agents as $id=>$agent)
+                            <option value="{{ $id }}">{{ $agent }}</option>
+                        @endforeach
+                    </select>
+
+                    @error('agent_id')
+                        <span class="text-danger">{{$message}}</span>
+                    @enderror
+                </div>
+                <div class="col-sm-3 mb-3 mb-sm-0">
+                    <label>  &nbsp;</label> 
                     <button type="submit" class="btn btn-success btn-user btn-block">Search</button>
                 </div>
             </div>
@@ -42,8 +72,12 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>Loan No </th>
+                            <th>Account No </th>
                             <th>Date </th>
+                            <th>Account No </th>
+                            <th>Name </th>
+                            <th>Mobile No </th>
+                            <th>Agent Name </th>
                             <th>Amount</th>
                             <th>Received Amount</th>
                             <th>Balance Amount</th>
@@ -51,10 +85,15 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @if(!empty($repayments))
                         @foreach ($repayments as $repayment)
                             <tr>
-                                <td>{{ $repayment->loan->loan_no}}</td>
+                                <td>{{ $repayment->loan->account->account_no }}</td>
                                 <td>{{$repayment->payment_date }}</td>
+                                <td>{{$repayment->loan->account->account_no }}</td>
+                                <td>{{$repayment->loan->account->name }}</td>
+                                <td>{{$repayment->loan->account->mobile_no }}</td>
+                                <td>{{$repayment->loan->agent->full_name }}</td>
                                 <td>{{$repayment->interest_amount }}</td>
                                <td>{{$repayment->paid_amount }}</td>
                                <td>{{$repayment->balance_amount() }}</td>
@@ -88,9 +127,10 @@
                                </td>
                            </tr>
                        @endforeach
+                       @endif
                     </tbody>
                 </table>
-                {{$repayments->links()}}
+                {{ isset($repayments) ? $repayments->links() : ''}}
 
             </div>
         </div>

@@ -32,12 +32,12 @@ class LoanRepayment extends Model
         return $this->belongsTo(Loan::class);
     }
 
-    public function setPaymentDate($value)
+    public function setPaymentDateAttribute($value)
     {
         $this->attributes['payment_date'] = $value != null ? Carbon::createFromFormat('d/m/Y', $value)->format('Y-m-d') : null;
     }
 
-    public function getPaymentDate($value)
+    public function getPaymentDateAttribute($value)
     {
         return Carbon::parse($value)->format('d/m/Y');
     }

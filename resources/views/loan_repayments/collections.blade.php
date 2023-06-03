@@ -25,23 +25,32 @@
                 @csrf
                 <div class="table-responsive">
                     <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">
-                        <thead>
+                    <thead>
                             <tr>
+                                <th>Account No </th>
                                 <th>Loan No </th>
+                                <th>Name </th>
+                                <th>Agent Name </th>
                                 <th>Payment Date </th>
-                                <th>Amount</th>
+                                <th>Loan Amount</th>
+                                <th>Interest Amount</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
+                                <td>{{$loan_repayment->loan->account->account_no }}</td>
                                 <td>{{$loan_repayment->loan->loan_no }}</td>
+                                <td>{{$loan_repayment->loan->account->name }}</td>
+                                <td>{{$loan_repayment->loan->agent->full_name }}</td>
                                 <td>{{$loan_repayment->payment_date }}</td>
+                                <td>{{$loan_repayment->loan->loan_amount }}</td>
                                 <td>{{$loan_repayment->interest_amount }}</td>
                             </tr>
                         </tbody>
                     </table>
 
                 </div>
+                <hr>
                 @if($collection)
                 <div class="table-responsive">
                     <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">

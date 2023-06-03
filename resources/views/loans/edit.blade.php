@@ -82,20 +82,7 @@
                         @error('email')
                             <span class="text-danger">{{$message}}</span>
                         @enderror
-                    </div>
-                    <div class="col-sm-4 mb-3 mb-sm-0">
-                    <label><span style="color:red;">*</span>Area</label>
-                        <select name="area_id" class="form-control form-control-user @error('area_id') is-invalid @enderror" >
-                            <option value="">Please Select</option>
-                            @foreach ($areas as $id=>$area)
-                                <option value="{{ $id }}"  {{ $loan->area_id == $id ? 'Selected' : ''}}>{{ $area }}</option>
-                            @endforeach
-                        </select>
-
-                        @error('area_id')
-                            <span class="text-danger">{{$message}}</span>
-                        @enderror
-                    </div>
+                    </div>                  
                     <div class="col-sm-4 mb-3 mb-sm-0">
                     <label><span style="color:red;">*</span>Agent</label>
                         <select name="agent_id" class="form-control form-control-user @error('agent_id') is-invalid @enderror" >

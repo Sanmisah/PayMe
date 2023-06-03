@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Support\Str;
-use App\Models\Area;
+use App\Models\Account;
 use App\Models\User;
 use Carbon\Carbon;
 
@@ -20,16 +20,8 @@ class Loan extends Model
 
     use HasFactory;
     protected $fillable = [
-        'name',
-        'mobile_no',
-        'alternative_no',
-        'email',
-        'contact_person',
-        'contact_person_no',
-        'contact_person_email',
+        'account_id',
         'agent_id',
-        'area_id',
-        'address',
         'loan_no',
         'loan_date',
         'loan_amount',
@@ -38,11 +30,11 @@ class Loan extends Model
         'emi_day'
     ];
 
-    public function Area(){
-        return $this->belongsTo(Area::class);
+    public function Account(){
+        return $this->belongsTo(Account::class);
     }
 
-    public function Agent(){
+       public function Agent(){
         return $this->belongsTo(User::class);
     }
 
@@ -51,12 +43,12 @@ class Loan extends Model
         return $this->hasMany(LoanRepayment::class);
     }
 
-    public function setLoanDate($value)
+    public function setLoanDateAttribute($value)
     {
         $this->attributes['loan_date'] = $value != null ? Carbon::createFromFormat('d/m/Y', $value)->format('Y-m-d') : null;
     }
 
-    public function getLoanDate($value)
+    public function getLoanDateAttribute($value)
     {
         return Carbon::parse($value)->format('d/m/Y');
     }

@@ -67,7 +67,7 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-4 mb-3 mb-sm-0">
-                        <label> Alternative Mobile no</label>
+                        <label><span style="color:red;">*</span> Alternative Mobile no</label>
                         <input 
                             type="text" 
                             class="form-control form-control-user @error('alternative_no') is-invalid @enderror" 

@@ -30,6 +30,8 @@
                         <thead>
                             <tr>
                                 <th>Loan No </th>
+                                <th>Name </th>
+                                <th>Agent Name </th>
                                 <th>Payment Date </th>
                                 <th>Amount</th>
                             </tr>
@@ -37,6 +39,8 @@
                         <tbody>
                             <tr>
                                 <td>{{$loan_repayment->loan->loan_no }}</td>
+                                <td>{{$loan_repayment->loan->account->name }}</td>
+                                <td>{{$loan_repayment->loan->agent->full_name }}</td>
                                 <td>{{$loan_repayment->payment_date }}</td>
                                 <td>{{$loan_repayment->interest_amount }}</td>
                             </tr>

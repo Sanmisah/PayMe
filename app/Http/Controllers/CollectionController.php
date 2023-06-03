@@ -5,18 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Loan;
 use App\Models\Account;
+use App\Models\Area;
 use App\Models\User;
 use App\Models\LoanRepayment;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 
-class LoanController extends Controller
+class CollectionController extends Controller
 {
     
     public function index()
     {
-        $loans = Loan::with(['Agent', 'Account'])->orderBy('id', 'desc')->paginate(20);
+        $loans = Loan::with(['Agent', 'Account'])->paginate(20);
         return view('loans.index', compact('loans'));
     }
 
@@ -24,8 +25,10 @@ class LoanController extends Controller
     public function create()
     {
         $accounts = Account::all()->pluck('name', 'id');
+        $areas = Area::all()->pluck('area', 'id');
         $agents = User::where(['role_id'=>2])->pluck('first_name', 'id');
         return view('loans.create')->with([
+            'areas' => $areas,
             'accounts' => $accounts,
             'agents' => $agents,
         ]);
@@ -37,7 +40,7 @@ class LoanController extends Controller
         $input = $request->all();
         $request->validate([
             'account_id'=>'required',
-            'agent_id'=>'required',
+            'area_id'=>'required',
             'loan_amount'=>'required|numeric',
             'interest_rate'=>'required|numeric',
             'loan_date'=>'required',

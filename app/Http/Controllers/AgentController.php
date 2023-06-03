@@ -12,7 +12,7 @@ class AgentController extends Controller
    
     public function index()
     {
-        $agents = User::where(['role_id'=>2])->paginate(10);
+        $agents = User::where(['role_id'=>2])->orderBy('id', 'desc')->paginate(10);
         return view('agents.index', compact('agents'));
     }
 
