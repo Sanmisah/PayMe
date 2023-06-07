@@ -31,6 +31,7 @@
                             <th>Loan No </th>
                             <th>Loan Date </th>
                             <th>Agent Name </th>
+                            <th>Account No </th>
                             <th>Name </th>
                             <th>Mobile No</th>
                             <th>Contact Person</th>
@@ -45,6 +46,7 @@
                                 <td>{{$loan->loan_no }}</td>
                                 <td>{{$loan->loan_date }}</td>
                                 <td>{{$loan->Agent->first_name }}</td>
+                               <td>{{$loan->Account->account_no }}</td>
                                <td>{{$loan->Account->name }}</td>
                                <td>{{$loan->Account->mobile_no }} </td>
                                <td>{{$loan->Account->contact_person }}</td>

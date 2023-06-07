@@ -35,7 +35,7 @@ class LoanRepaymentController extends Controller
             $date = Carbon::createFromFormat('d/m/Y', $input['till_date']);
             $repayments = LoanRepayment::whereDate('payment_date', '<=', $date)
                                         ->whereColumn('interest_amount', '>','paid_amount')
-                                        ->with(['Loan'=>['Agent', 'Account']])
+                                        ->with(['Loan'=>['Agent', 'Account'=>['Area']]])
                                         ->whereRelation('Loan', $conditions)->orderBy('payment_date', 'asc')->paginate(20);
             return view('loan_repayments.index', compact('repayments'))->with([
                 'accounts' => $accounts,

@@ -73,14 +73,15 @@
                     <thead>
                         <tr>
                             <th>Account No </th>
-                            <th>Date </th>
-                            <th>Account No </th>
                             <th>Name </th>
+                            <th>Area </th>
+                            <th>Date </th>
                             <th>Mobile No </th>
+                            <th>Alternative Mobile No </th>
                             <th>Agent Name </th>
                             <th>Amount</th>
-                            <th>Received Amount</th>
                             <th>Balance Amount</th>
+                            <th>Monthly Interest</th>
                             <th width="10%">Action</th>
                         </tr>
                     </thead>
@@ -88,15 +89,16 @@
                         @if(!empty($repayments))
                         @foreach ($repayments as $repayment)
                             <tr>
-                                <td>{{ $repayment->loan->account->account_no }}</td>
-                                <td>{{$repayment->payment_date }}</td>
                                 <td>{{$repayment->loan->account->account_no }}</td>
                                 <td>{{$repayment->loan->account->name }}</td>
+                                <td>{{$repayment->loan->account->area->area }}</td>
+                                <td>{{$repayment->payment_date }}</td>
                                 <td>{{$repayment->loan->account->mobile_no }}</td>
+                                <td>{{$repayment->loan->account->alternative_no }}</td>
                                 <td>{{$repayment->loan->agent->full_name }}</td>
                                 <td>{{$repayment->interest_amount }}</td>
-                               <td>{{$repayment->paid_amount }}</td>
                                <td>{{$repayment->balance_amount() }}</td>
+                               <td>{{$repayment->loan->interest_rate }}</td>
                                 <td>  
                                     
                                     <div class="display:none;">
