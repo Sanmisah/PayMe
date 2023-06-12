@@ -25,6 +25,7 @@ class Loan extends Model
         'loan_no',
         'loan_date',
         'loan_amount',
+        'final_amount',
         'interest_rate',
         'period',
         'emi_day'
@@ -55,7 +56,7 @@ class Loan extends Model
 
     public function balanceAmount()
     {
-        return $this->loan_amount - $this->paid_amount;
+        return $this->final_amount - $this->paid_amount;
     }
 
     public static function booted() :void 

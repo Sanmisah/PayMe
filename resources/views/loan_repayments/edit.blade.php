@@ -50,17 +50,27 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-3 mb-3 mb-sm-0">
-                    <label><span style="color:red;">*</span> Reschedule Date</label>
+                        <label><span style="color:red;">*</span> Reschedule Date</label>
                         <input 
                             type="text" 
                             class="form-control form-control-user @error('payment_date') is-invalid @enderror" 
-                            id="payment_date"
-                            placeholder="payment_date" 
-                            data-mask="99/99/9999"
+                            id="date"
                             name="payment_date" 
                             value="{{ old('payment_date') ? old('payment_date') : $loan_repayment->payment_date  }}">
 
                         @error('payment_date')
+                            <span class="text-danger">{{$message}}</span>
+                        @enderror
+                    </div>
+                    <div class="col-sm-9 mb-3 mb-sm-0">
+                        <label><span style="color:red;">*</span> Reason</label>
+                        <input 
+                            type="text" 
+                            class="form-control form-control-user @error('reason') is-invalid @enderror" 
+                            name="reason" 
+                            value="{{ old('reason') ? old('reason') : $loan_repayment->reason  }}">
+
+                        @error('reason')
                             <span class="text-danger">{{$message}}</span>
                         @enderror
                     </div>
@@ -80,4 +90,14 @@
 </div>
 
 
+@endsection
+@section('scripts')
+<script>
+    $(document).ready(function(){
+        $('#date').datepicker({
+            uiLibrary: 'bootstrap4',
+            format: 'dd/mm/yyyy'
+        });
+    });
+</script>
 @endsection

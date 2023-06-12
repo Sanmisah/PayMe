@@ -51,6 +51,9 @@
     <!-- Bootstrap core JavaScript-->
     <script src="{{asset('js/app.js')}}"></script>
     <script src="{{asset('js/bootstrap-inputmask.min.js')}}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>   
+    <script src="{{asset('js/moment.js')}}"></script>
 
 
 

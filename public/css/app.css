@@ -10019,3 +10019,22 @@ h3 {
     border-color: #dee2e6;
   }
 }
+.tableRibb tr td{
+  position: relative;
+  
+}
+.tableRibb tr td.prova:after {
+  content: attr(data-ribbon);
+  position: absolute;
+  width: 20px;
+  height: 10px;
+  background: #428bca;
+  color: white;
+  top: -2px;
+  text-align: center ;
+  font-size: 9px;
+  line-height: 12px;
+  right: -5px;
+  transform: rotate(45deg);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+}

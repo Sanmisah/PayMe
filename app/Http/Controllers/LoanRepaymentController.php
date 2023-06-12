@@ -32,14 +32,17 @@ class LoanRepaymentController extends Controller
             if(!empty($input['agent_id'])){
                 $conditions['agent_id'] = $input['agent_id'];
             }
+            $today = Carbon::now();
             $date = Carbon::createFromFormat('d/m/Y', $input['till_date']);
+            $arr = LoanRepayment::whereNotNull('log')->whereColumn('interest_amount', '>', 'paid_amount')->pluck('loan_id')->toArray();
             $repayments = LoanRepayment::whereDate('payment_date', '<=', $date)
                                         ->whereColumn('interest_amount', '>','paid_amount')
                                         ->with(['Loan'=>['Agent', 'Account'=>['Area']]])
                                         ->whereRelation('Loan', $conditions)->orderBy('payment_date', 'asc')->paginate(20);
             return view('loan_repayments.index', compact('repayments'))->with([
                 'accounts' => $accounts,
-                'agents' => $agents
+                'agents' => $agents,
+                'arr' => $arr
             ]);
 
         } 

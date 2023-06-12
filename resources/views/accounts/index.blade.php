@@ -31,6 +31,7 @@
                             <th>Account No </th>
                             <th>Name </th>
                             <th>Area </th>
+                            <th>Address </th>
                             <th>Mobile No</th>
                             <th>Alternative Mobile No</th>
                             <th>Contact Person</th>
@@ -44,6 +45,7 @@
                                 <td>{{$account->account_no }}</td>
                                <td>{{$account->name }}</td>
                                <td>{{$account->area->area }}</td>
+                               <td>{{$account->address }} </td>
                                <td>{{$account->mobile_no }} </td>
                                <td>{{$account->alternative_no }} </td>
                                <td>{{$account->contact_person }}</td>

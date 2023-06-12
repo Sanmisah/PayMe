@@ -75,7 +75,7 @@
                             type="text" 
                             class="form-control form-control-user @error('loan_date') is-invalid @enderror" 
                             name="loan_date" 
-                            data-mask="99/99/9999"
+                            id="loanDate"
                             value="{{ old('loan_date')  }}">
 
                         @error('loan_date')
@@ -148,4 +148,14 @@
 </div>
 
 
+@endsection
+@section('scripts')
+<script>
+    $(document).ready(function(){
+        $('#loanDate').datepicker({
+            uiLibrary: 'bootstrap4',
+            format: 'dd/mm/yyyy'
+        });
+    });
+</script>
 @endsection

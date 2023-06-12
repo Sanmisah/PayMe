@@ -37,7 +37,7 @@ use Illuminate\Support\Str;
                         type="text"
                         class="form-control form-control @error('to_date') is-invalid @enderror"
                         name="to_date"
-                        data-mask="99/99/9999"
+                        id="date"
                         >
                     @error('to_date')
                         <span class="text-danger">{{$message}}</span>
@@ -59,6 +59,16 @@ use Illuminate\Support\Str;
    
 
 </div>
+@endsection
+@section('scripts')
+<script>
+    $(document).ready(function(){
+        $('#date').datepicker({
+            uiLibrary: 'bootstrap4',
+            format: 'dd/mm/yyyy'
+        });     
+    });
+</script>
 @endsection
 
 

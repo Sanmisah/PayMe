@@ -29,14 +29,14 @@
                         type="text" 
                         class="form-control form-control-user @error('till_date') is-invalid @enderror" 
                         name="till_date" 
-                        data-mask="99/99/9999"
+                        id="date"
                     >
                     @error('till_date')
                      <span class="text-danger"> {{ $message }}</span>
                     @enderror
                 </div>
                 <div class="col-sm-3 mb-3 mb-sm-0">
-                    <label><span style="color:red;">*</span> Loan Holder</label>
+                    <label>Loan Holder</label>
                     <select name="account_id" class="form-control form-control-user @error('account_id') is-invalid @enderror" >
                         <option value="">Please Select</option>
                         @foreach ($accounts as $id=>$account)
@@ -49,7 +49,7 @@
                     @enderror
                 </div>
                 <div class="col-sm-3 mb-3 mb-sm-0">
-                    <label><span style="color:red;">*</span> Agent Name</label>
+                    <label>Agent Name</label>
                     <select name="agent_id" class="form-control form-control-user @error('agent_id') is-invalid @enderror" >
                         <option value="">Please Select</option>
                         @foreach ($agents as $id=>$agent)
@@ -69,7 +69,7 @@
             </form>
 
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered tableRibb" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>Account No </th>
@@ -89,16 +89,16 @@
                         @if(!empty($repayments))
                         @foreach ($repayments as $repayment)
                             <tr>
-                                <td>{{$repayment->loan->account->account_no }}</td>
+                                <td  class='{{ in_array($repayment->loan_id, $arr) ? "prova" : "" }}' data-ribbon="D"> <span class='{{ in_array($repayment->loan_id, $arr) ? "text-danger" : "" }}'>{{ $repayment->loan->account->account_no }}</span>  </td>
                                 <td>{{$repayment->loan->account->name }}</td>
                                 <td>{{$repayment->loan->account->area->area }}</td>
                                 <td>{{$repayment->payment_date }}</td>
                                 <td>{{$repayment->loan->account->mobile_no }}</td>
                                 <td>{{$repayment->loan->account->alternative_no }}</td>
                                 <td>{{$repayment->loan->agent->full_name }}</td>
-                                <td>{{$repayment->interest_amount }}</td>
-                               <td>{{$repayment->balance_amount() }}</td>
-                               <td>{{$repayment->loan->interest_rate }}</td>
+                                <td> <span class='{{ $repayment->log ? "text-danger" : "text-danger" }}'>{{ $repayment->interest_amount }}</span>  </td>
+                                <td> <span class='{{ $repayment->log ? "text-danger" : "text-danger" }}'>{{ $repayment->balance_amount() }}</span>  </td>
+                                <td>{{$repayment->loan->interest_rate }}</td>
                                 <td>  
                                     
                                     <div class="display:none;">
@@ -116,16 +116,12 @@
                                             </a>
                                         @endif
                                         @if($repayment->log)
-                                            <?php $data = json_decode($repayment->log); ?>
-                                            <a href="#" class="btn btn-info btn-sm m-2 log" data-toggle="modal" data-target="#Modal" alt="{{ $repayment->log }}">
+                                            <a href="#" class="btn btn-info btn-sm m-2 log" data-toggle="modal" data-target="#Modal" alt="{{ $repayment->log }}" title="{{ $repayment->reason }}">
                                                 Log
                                             </a>     
                                         @endif      
 
                                     </div>
-                                                         
-                                  
-                                  
                                </td>
                            </tr>
                        @endforeach
@@ -149,9 +145,10 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-                    <label for="">New Date: &nbsp; &nbsp; </label><span id="newDate"></span> <br>
-                    <label for="">Old Date: &nbsp; &nbsp; </label><span id="oldDate"></span> <br>
-                    <label for="">Older Log: &nbsp; </label><span id="olderLog"></span> <br>
+                    <label>New Date: &nbsp; &nbsp; </label><span id="newDate"></span> <br>
+                    <label>Old Date: &nbsp; &nbsp; </label><span id="oldDate"></span> <br>
+                    <label>Reason: &nbsp; &nbsp; </label><span id="reason"></span> <br>
+                    <label>Older Log: &nbsp; </label><span id="olderLog"></span> <br>
 
                     </div>
                   
@@ -171,16 +168,25 @@
 @section('scripts')
 <script>
     $(document).ready(function(){
+       
         $(".log").click(function(){
             data = $(this).attr('alt');
+            title = $(this).attr('title');
             log = JSON.parse(data);
+            $("#reason").text(title)
             $('#newDate').text(log['new_date']);
             $('#oldDate').text(log['old_date']);
             oldLog = JSON.parse(log['old_record']);
             $('#olderLog').text(oldLog['old_date']);
+
            
 
         });
+        $('#date').datepicker({
+            uiLibrary: 'bootstrap4',
+            format: 'dd/mm/yyyy'
+        });
+       
     });
 </script>
 @endsection

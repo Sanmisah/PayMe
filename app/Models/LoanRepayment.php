@@ -25,6 +25,7 @@ class LoanRepayment extends Model
         'interest_amount',
         'repayment_amount',
         'paid_amount',
+        'reason',
         'log'
     ];
 

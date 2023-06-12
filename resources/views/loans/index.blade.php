@@ -35,9 +35,10 @@
                             <th>Name </th>
                             <th>Mobile No</th>
                             <th>Contact Person</th>
+                            <th>Initial Loan Amount</th>
                             <th>Loan Amount</th>
                             <th>Balance Amount</th>
-                            <th width="10%">Action</th>
+                            <th width="5%">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -50,6 +51,7 @@
                                <td>{{$loan->Account->name }}</td>
                                <td>{{$loan->Account->mobile_no }} </td>
                                <td>{{$loan->Account->contact_person }}</td>
+                               <td>{{ $loan->final_amount }} </td>
                                <td>{{ $loan->loan_amount }} <br> at {{ $loan->interest_rate }}% Interest Rate</td>
                                <td>{{ $loan->balanceAmount() }}</td>
                                 <td>   

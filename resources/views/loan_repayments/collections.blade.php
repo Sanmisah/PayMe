@@ -85,7 +85,7 @@
                             type="text" 
                             class="form-control form-control-user @error('payment_date') is-invalid @enderror" 
                             name="payment_date" 
-                            data-mask="99/99/9999"
+                            id="paymentDate"
                         >
 
                         @error('payment_date')
@@ -186,6 +186,10 @@
         } else {
             $("#utr").hide()
         }
+    });
+    $('#paymentDate').datepicker({
+        uiLibrary: 'bootstrap4',
+        format: 'dd/mm/yyyy'
     });
    
 </script>
