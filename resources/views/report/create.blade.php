@@ -55,7 +55,7 @@ use Illuminate\Support\Str;
                         <span class="text-danger">{{$message}}</span>
                     @enderror
                 </div>    
-                <div class="col-sm-3 mb-3 mb-sm-0">
+                <!-- <div class="col-sm-3 mb-3 mb-sm-0">
                     <label>Loan</label>
                     <select class="form-control  @error('block_id') is-invalid @enderror" name="loan_id" id="pet">
                         <option value="">Please Select</option>
@@ -66,7 +66,7 @@ use Illuminate\Support\Str;
                     @error('block_id')
                         <span class="text-danger">{{$message}}</span>
                     @enderror
-                </div>   
+                </div>    -->
                 
             </div> 
             <div class="form-group row">

@@ -82,6 +82,7 @@
         </a>
         <div id="reportDropDown" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="{{ route('report.edit') }}">Loan Report</a>
                 <a class="collapse-item" href="{{ route('report.loan') }}">Loan Repayments Report</a>
                 <a class="collapse-item" href="{{ route('collections') }}">Collection Report</a>
             </div>

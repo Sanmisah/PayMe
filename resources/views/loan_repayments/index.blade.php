@@ -1,3 +1,6 @@
+<?php 
+use Carbon\Carbon;
+ ?>
 @extends('layouts.app')
 
 @section('title', 'Loan Repayments')
@@ -39,8 +42,8 @@
                     <label>Loan Holder</label>
                     <select name="account_id" class="form-control form-control-user @error('account_id') is-invalid @enderror" >
                         <option value="">Please Select</option>
-                        @foreach ($accounts as $id=>$account)
-                            <option value="{{ $id }}">{{ $account }}</option>
+                        @foreach ($accounts as $account)
+                            <option value="{{ $account->id }}">{{ $account->account_no }} - {{ $account->name }}</option>
                         @endforeach
                     </select>
 
@@ -52,8 +55,8 @@
                     <label>Agent Name</label>
                     <select name="agent_id" class="form-control form-control-user @error('agent_id') is-invalid @enderror" >
                         <option value="">Please Select</option>
-                        @foreach ($agents as $id=>$agent)
-                            <option value="{{ $id }}">{{ $agent }}</option>
+                        @foreach ($agents as $agent)
+                            <option value="{{ $agent->id }}">{{ $agent->full_name }}</option>
                         @endforeach
                     </select>
 
@@ -86,18 +89,20 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <?php $today = Carbon::now(); ?>
                         @if(!empty($repayments))
                         @foreach ($repayments as $repayment)
-                            <tr>
-                                <td  class='{{ in_array($repayment->loan_id, $arr) ? "prova" : "" }}' data-ribbon="D"> <span class='{{ in_array($repayment->loan_id, $arr) ? "text-danger" : "" }}'>{{ $repayment->loan->account->account_no }}</span>  </td>
+                        <?php $date = Carbon::createFromFormat('d/m/Y', $repayment->payment_date); ?>
+                            <tr class='{{ ($today >= $date) ? "text-danger" : "" }}'>
+                                <td>  <span>{{ $repayment->loan->account->account_no }}</span>  </td>
                                 <td>{{$repayment->loan->account->name }}</td>
                                 <td>{{$repayment->loan->account->area->area }}</td>
                                 <td>{{$repayment->payment_date }}</td>
                                 <td>{{$repayment->loan->account->mobile_no }}</td>
                                 <td>{{$repayment->loan->account->alternative_no }}</td>
                                 <td>{{$repayment->loan->agent->full_name }}</td>
-                                <td> <span class='{{ $repayment->log ? "text-danger" : "text-danger" }}'>{{ $repayment->interest_amount }}</span>  </td>
-                                <td> <span class='{{ $repayment->log ? "text-danger" : "text-danger" }}'>{{ $repayment->balance_amount() }}</span>  </td>
+                                <td> <span>{{ $repayment->interest_amount }}</span>  </td>
+                                <td> <span >{{ $repayment->balance_amount() }}</span>  </td>
                                 <td>{{$repayment->loan->interest_rate }}</td>
                                 <td>  
                                     
@@ -105,10 +110,11 @@
                                         @if($repayment->balance_amount() > 0)                                                                    
                                             <a href="{{ route('loan_repayments.edit', ['loan_repayment' => $repayment->id]) }}" class="btn btn-primary btn-sm m-2">
                                                 Postponed
-                                            </a>  
+                                            </a> 
                                             <a href="{{ route('loan_repayments.collections', ['loan_repayment' => $repayment->id]) }}" class="btn btn-primary btn-sm m-2">
                                                 Payment
                                             </a>  
+                                                
                                         @endif
                                         @if($repayment->paid_amount > 0)
                                             <a href="{{ env('BASE_URL', '') }}/reports/collection/{{$repayment->id}}/{{$repayment->loan->name}}.pdf" class="btn btn-primary btn-sm m-2" target="_blank">
@@ -125,8 +131,18 @@
                                </td>
                            </tr>
                        @endforeach
-                       @endif
+                       
                     </tbody>
+                    <tfoot>
+                        <tr> 
+                            <td colspan="11" align="right"> 
+                               
+                               
+                               
+                            </td>
+                        </tr>
+                    </tfoot>
+                    @endif
                 </table>
                 {{ isset($repayments) ? $repayments->links() : ''}}
 
@@ -160,6 +176,7 @@
             </div>
         </div>
     </div>
+    
 
 </div>
 

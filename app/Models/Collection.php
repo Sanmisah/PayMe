@@ -38,7 +38,7 @@ class Collection extends Model
     }
 
 
-    public function LoanRepayments(){
+    public function LoanRepayment(){
         return $this->belongsTo(LoanRepayment::class);
     }
 }

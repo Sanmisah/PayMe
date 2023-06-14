@@ -4,7 +4,7 @@ use Illuminate\Support\Str;
 
 @extends('layouts.app')
 
-@section('title', ' Loan Repayments')
+@section('title', ' Loan')
 
 
 @section('content')
@@ -27,10 +27,22 @@ use Illuminate\Support\Str;
             <h6 class="m-0 font-weight-bold text-primary"></h6>
         </div>
         <div class="card-body p-2"> 
-            <form method="POST" action="{{route('report.loan')}}" target="_blank">
+            <form method="POST" action="{{route('report.edit')}}" target="_blank">
             @csrf         
 
             <div class="form-group row m-2">                 
+                <div class="col-sm-3 mb-3 mb-sm-0">
+                    <label>From</label>
+                    <input
+                        type="text"
+                        class="form-control form-control @error('from') is-invalid @enderror"
+                        name="from"
+                        id="from"
+                        >
+                    @error('from')
+                        <span class="text-danger">{{$message}}</span>
+                    @enderror
+                </div> 
                 <div class="col-sm-3 mb-3 mb-sm-0">
                     <label>To</label>
                     <input
@@ -56,6 +68,18 @@ use Illuminate\Support\Str;
                         <span class="text-danger">{{$message}}</span>
                     @enderror
                 </div>
+                <div class="col-sm-3 mb-3 mb-sm-0">
+                    <label>Account</label>
+                    <select class="form-control  @error('account_id') is-invalid @enderror" name="account_id" id="pet">
+                        <option value="">Please Select</option>
+                       @foreach ($accounts as $id=>$account)
+                       <option value="{{ $id}}">{{ $account }}</option>
+                       @endforeach
+                    </select>          
+                    @error('account_id')
+                        <span class="text-danger">{{$message}}</span>
+                    @enderror
+                </div>   
            
                 <div class="col-md-3">
                     <label> &nbsp;</label>
@@ -77,6 +101,10 @@ use Illuminate\Support\Str;
 <script>
     $(document).ready(function(){
         $('#date').datepicker({
+            uiLibrary: 'bootstrap4',
+            format: 'dd/mm/yyyy'
+        });   
+        $('#from').datepicker({
             uiLibrary: 'bootstrap4',
             format: 'dd/mm/yyyy'
         });     

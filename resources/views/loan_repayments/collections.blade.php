@@ -86,6 +86,7 @@
                             class="form-control form-control-user @error('payment_date') is-invalid @enderror" 
                             name="payment_date" 
                             id="paymentDate"
+                            value="{{ $date }}"
                         >
 
                         @error('payment_date')

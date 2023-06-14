@@ -63,15 +63,25 @@
                 </tr>
             </thead>
             <tbody>
+                {{ $account_no = ' '; }}
                  @if(!empty($collections)) 
                  @foreach ($collections as $collection)
+                 @if($account_no != $collection->LoanRepayment->Loan->Account->account_no)
+                 <tr border="1">
+                    <td border="1" colspan="6">
+                        <b>Account No: </b> {{ $collection->LoanRepayment->Loan->Account->account_no; }}   &nbsp; &emsp; &emsp; <b>Name: </b> {{ $collection->LoanRepayment->Loan->Account->name; }}  
+                        &nbsp; &emsp; &emsp; <b>Mobile No: </b> {{ $collection->LoanRepayment->Loan->Account->mobile_no; }}  &nbsp; &emsp; &emsp; <b>Area: </b> {{ $collection->LoanRepayment->Loan->Account->area->area; }}                       
+                    </td>
+                 </tr>
+                 {{ $account_no = $collection->LoanRepayment->Loan->Account->account_no; }}
+                 @endif
                 <tr  border='1px'>
                     <td  border='1px'> {{ $collection->payment_date }}  </td>
-                    <td  border='1px'> {{ $collection->interest_received_amount }}  </td>
-                    <td  border='1px'> {{ $collection->travelling_charges ? $collection->travelling_charges : '' }}  </td>
-                    <td  border='1px'> {{ $collection->loan_received_amount ? $collection->loan_received_amount : '' }}  </td>
+                    <td  border='1px' align="right"> {{ $collection->interest_received_amount }}  </td>
+                    <td  border='1px' align="right"> {{ $collection->travelling_charges ? $collection->travelling_charges : '' }}  </td>
+                    <td  border='1px' align="right"> {{ $collection->loan_received_amount ? $collection->loan_received_amount : '' }}  </td>
                     <td  border='1px'>{{ $collection->payment_mode }} {{ ($collection->payment_mode == 'Babk') ? $collection->utr_no : '' }}</td>
-                    <td  border='1px'> {{ $collection->total_amount }}  </td>
+                    <td  border='1px' align="right"> {{ $collection->total_amount }}  </td>
                 </tr>
                 @endforeach
                 @endif

@@ -24,6 +24,39 @@
 
         </div>
         <div class="card-body">
+            <form method="GET" action="{{ route('loans.index') }}">
+                @csrf
+                <div class="form-group row">
+                    <div class="col-md-3 mb-3">
+                        <label><b>Search By Account No</b></label>
+                        <input type="text" name="search_account" class="form-control  @error('search_account') is-invalid @enderror">
+                        @error('search_account')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label><b>Search By Name</b></label>
+                        <input type="text" name="search" class="form-control  @error('search') is-invalid @enderror">
+                        @error('search')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label><b>Search By Mobile No</b></label>
+                        <input type="text" name="search_mobile" class="form-control  @error('search_mobile') is-invalid @enderror">
+                        @error('search_mobile')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label> &nbsp; </label>
+                        <button type="submit" class="btn btn-success btn-block">Search</button>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
@@ -38,7 +71,7 @@
                             <th>Initial Loan Amount</th>
                             <th>Loan Amount</th>
                             <th>Balance Amount</th>
-                            <th width="5%">Action</th>
+                            <th width="20%">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,7 +88,13 @@
                                <td>{{ $loan->loan_amount }} <br> at {{ $loan->interest_rate }}% Interest Rate</td>
                                <td>{{ $loan->balanceAmount() }}</td>
                                 <td>   
-                                    <div  style="display:flex;">                                       
+                                    <div  style="display:flex;">        
+                                        <a href="{{ route('loan_repayments.show', ['loan_repayment' => $loan->id]) }}" class="btn btn-primary btn-sm m-2">
+                                            Transaction History
+                                        </a>   
+                                        <a href="{{ route('loans.edit', ['loan' => $loan->id]) }}" class="btn btn-primary btn-sm m-2">
+                                            <i class="fa fa-pen"></i>
+                                        </a>                              
                                     
                                         <form action="{{ route('loans.destroy',$loan->id) }}" method="Post" onsubmit="return confirm('Do you really want to Delete this Record')">
                                             @csrf

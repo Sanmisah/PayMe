@@ -107,7 +107,7 @@ class CollectionController extends Controller
 
         ]);
 
-        $loan->load(['LoanRepayments']);
+        $loan->load(['LoanRepayment']);
 
 
         $loan->name = $input['name'];

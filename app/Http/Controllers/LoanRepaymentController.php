@@ -17,13 +17,15 @@ class LoanRepaymentController extends Controller
    
     public function index(Request $request)
     {
-        $accounts = Account::all()->pluck('name', 'id');
-        $agents = User::where(['role_id'=>2])->pluck('first_name', 'id');
+        $accounts = Account::all();
+        $agents = User::where(['role_id'=>2])->get();
         $input = $request->all();
         if(!empty($input)){
-            $request->validate([
-                'till_date' => 'required'
-            ]);
+            $condition = [];
+            if($request->till_date){
+                $date = Carbon::createFromFormat('d/m/Y', $request->till_date);
+                $condition[] = ['payment_date', '<=', $date];
+            }
             $conditions = [];
             if(!empty($input['account_id'])){
                 $conditions['account_id'] = $input['account_id'];
@@ -32,17 +34,16 @@ class LoanRepaymentController extends Controller
             if(!empty($input['agent_id'])){
                 $conditions['agent_id'] = $input['agent_id'];
             }
-            $today = Carbon::now();
-            $date = Carbon::createFromFormat('d/m/Y', $input['till_date']);
-            $arr = LoanRepayment::whereNotNull('log')->whereColumn('interest_amount', '>', 'paid_amount')->pluck('loan_id')->toArray();
-            $repayments = LoanRepayment::whereDate('payment_date', '<=', $date)
+            $repayments = LoanRepayment::where($condition)
                                         ->whereColumn('interest_amount', '>','paid_amount')
                                         ->with(['Loan'=>['Agent', 'Account'=>['Area']]])
                                         ->whereRelation('Loan', $conditions)->orderBy('payment_date', 'asc')->paginate(20);
+            $repaymentArr = $repayments->pluck('id');
+
             return view('loan_repayments.index', compact('repayments'))->with([
                 'accounts' => $accounts,
                 'agents' => $agents,
-                'arr' => $arr
+                'repaymentArr' => implode( ',', $repaymentArr->toArray())
             ]);
 
         } 
@@ -72,10 +73,41 @@ class LoanRepaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($loan_id)
+    public function show($loan_id, Request $request)
     {
-        $repayments = LoanRepayment::where(['loan_id'=>$loan_id])->get();
-        return view('loan_repayments.show', compact('repayments'));
+        $agents = User::where(['role_id'=>2])->pluck('first_name', 'id');
+        $input = $request->all();
+        if($input['data']){
+            $repayments = LoanRepayment::whereIn('id', $input['data']);
+
+
+        }
+        if(!empty($input)){
+            $condition = [];
+            if($request->till_date){
+                $date = Carbon::createFromFormat('d/m/Y', $request->till_date);
+                $condition[] = ['payment_date', '<=', $date];
+            }
+            $conditions = [];
+           
+            if(!empty($input['agent_id'])){
+                $conditions['agent_id'] = $input['agent_id'];
+            }
+            $repayments = LoanRepayment::where($condition)
+                                        ->where(['loan_id'=>$loan_id])
+                                        ->whereColumn('interest_amount', '>','paid_amount')
+                                        ->with(['Loan'=>['Agent', 'Account'=>['Area']]])
+                                        ->whereRelation('Loan', $conditions)->orderBy('payment_date', 'asc')->paginate(20);
+            return view('loan_repayments.show', compact('repayments'))->with([
+                'agents' => $agents,
+            ]);
+
+        } 
+        
+        $repayments = LoanRepayment::where(['loan_id'=>$loan_id])->orderBy('payment_date', 'asc')->paginate(20);
+        return view('loan_repayments.show', compact('repayments'))->with([
+            'agents' => $agents
+        ]);
         
     }
 
@@ -127,10 +159,12 @@ class LoanRepaymentController extends Controller
     {
         $loan_repayment->load('Loan');
         $collection = Collection::where(['loan_repayment_id'=>$loan_repayment->id])->get();
+        $date = date('d/m/Y');
 
         return view('loan_repayments.collections')->with([
             'loan_repayment' => $loan_repayment,
-            'collection' => $collection
+            'collection' => $collection,
+            'date' => $date
         ]);
         
     }

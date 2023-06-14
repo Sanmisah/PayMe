@@ -30,8 +30,8 @@
                         <label><span style="color:red;">*</span> Account</label>
                         <select name="account_id" class="form-control form-control-user @error('account_id') is-invalid @enderror" >
                             <option value="">Please Select</option>
-                            @foreach ($accounts as $id=>$account)
-                                <option value="{{ $id }}">{{ $account }}</option>
+                            @foreach ($accounts as $account)
+                                <option value="{{ $account->id }}">{{ $account->account_no }}- {{ $account->name }}</option>
                             @endforeach
                         </select>
 
@@ -93,8 +93,10 @@
                         @error('loan_amount')
                             <span class="text-danger">{{$message}}</span>
                         @enderror
-                    </div>
-                    <div class="col-sm-6 mb-3 mb-sm-0">
+                    </div>                      
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-4 mb-3 mb-sm-0">
                         <label><span style="color:red;">*</span> EMI Day</label>
                         <select name="emi_day" id=""  class="form-control form-control-user @error('emi_day') is-invalid @enderror" >
                             <option value="">Please Select</option>
@@ -108,8 +110,23 @@
                         @error('emi_day')
                             <span class="text-danger">{{$message}}</span>
                         @enderror
-                    </div>                   
-                    <div class="col-sm-6 mb-3 mb-sm-0">
+                    </div>      
+
+                    <div class="col-sm-4 mb-3 mb-sm-0">
+                        <label><span style="color:red;">*</span> Period In Months</label>
+                        <select name="period" id="" class="form-control form-control-period @error('period') is-invalid @enderror">
+                            <option value="">Please Select</option>
+                            <?php $arr = range(1,60); ?>
+                            @foreach($arr as $value)
+                            <option value="{{ $value }}">{{ $value }}</option>
+                            @endforeach
+                        </select>
+
+                        @error('period')
+                            <span class="text-danger">{{$message}}</span>
+                        @enderror
+                    </div>
+                    <div class="col-sm-4 mb-3 mb-sm-0">
                         <label><span style="color:red;">*</span> Interest Rate Per Months</label>
                         <input 
                             type="text" 
@@ -120,20 +137,7 @@
                         @error('interest_rate')
                             <span class="text-danger">{{$message}}</span>
                         @enderror
-                    </div>                   
-
-                    <div class="col-sm-6 mb-3 mb-sm-0">
-                        <label><span style="color:red;">*</span> Period In Months</label>
-                        <input 
-                            type="text" 
-                            class="form-control form-control-user @error('period') is-invalid @enderror" 
-                            name="period" 
-                            value="{{ old('period')  }}">
-
-                        @error('period')
-                            <span class="text-danger">{{$message}}</span>
-                        @enderror
-                    </div>
+                    </div>    
                 </div>
 
                 {{-- Save Button --}}

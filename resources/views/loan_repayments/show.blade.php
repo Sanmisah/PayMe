@@ -1,3 +1,6 @@
+<?php 
+use Carbon\Carbon;
+ ?>
 @extends('layouts.app')
 
 @section('title', 'Loan Repayments')
@@ -24,8 +27,13 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>Loan No </th>
+                            <th>Account No </th>
+                            <th>Name </th>
+                            <th>Area </th>
                             <th>Date </th>
+                            <th>Mobile No </th>
+                            <th>Alternative Mobile No </th>
+                            <th>Agent </th>
                             <th>Amount</th>
                             <th>Received Amount</th>
                             <th>Balanced Amount</th>
@@ -33,10 +41,17 @@
                         </tr>
                     </thead>
                     <tbody>
+                    <?php $today = Carbon::now(); ?>
                         @foreach ($repayments as $repayment)
-                            <tr>
-                                <td>{{ $repayment->loan->loan_no}}</td>
+                        <?php $date = Carbon::createFromFormat('d/m/Y', $repayment->payment_date); ?>
+                            <tr class='{{ ($today >= $date) ? "text-danger" : "" }}'>
+                                <td>{{ $repayment->loan->account->account_no}}</td>
+                                <td>{{ $repayment->loan->account->name}}</td>
+                                <td>{{ $repayment->loan->account->area->area}}</td>
                                 <td>{{$repayment->payment_date }}</td>
+                                <td>{{ $repayment->loan->account->mobile_no}}</td>
+                                <td>{{ $repayment->loan->account->alternative_no}}</td>
+                                <td>{{ $repayment->loan->agent->full_name}}</td>
                                 <td>{{$repayment->interest_amount }}</td>
                                <td>{{$repayment->paid_amount }}</td>
                                <td>{{$repayment->balance_amount() }}</td>
