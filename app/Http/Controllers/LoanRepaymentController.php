@@ -17,6 +17,7 @@ class LoanRepaymentController extends Controller
    
     public function index(Request $request)
     {
+
         $accounts = Account::all();
         $agents = User::where(['role_id'=>2])->get();
         $input = $request->all();
@@ -64,7 +65,31 @@ class LoanRepaymentController extends Controller
 
     public function store(Request $request)
     {
-        //
+        $details = $request->collect('Collection');
+        foreach($details as $detail){
+            if($detail['interest_received_amount']){
+                Collection::create([
+                    'payment_date' => date('d/m/Y'),
+                    'payment_mode' => 'Cash',
+                    'interest_received_amount' => $detail['interest_received_amount'],
+                    'total_amount' => $detail['interest_received_amount'],
+                    'loan_repayment_id' => $detail['loan_repayment_id']
+
+                ]);
+                $loan_repayment = LoanRepayment::where(['id'=>$detail['loan_repayment_id']])->first();
+                $collection = Collection::where(['loan_repayment_id'=>$detail['loan_repayment_id']])->get();
+                $amount = $collection->sum('interest_received_amount');
+                $loan_repayment->paid_amount = $amount;
+                $loan_repayment->save();
+                $loan_repayment->with(['Loan'=>['Account', 'Agent'], 'Collection']);
+                $report = new Report();
+                $report->generate($loan_repayment);
+                
+
+            }
+        }
+
+        return redirect()->route('loan_repayments.index')->with('success', 'Loan Repayment has been Collected');
     }
 
     /**
@@ -77,11 +102,7 @@ class LoanRepaymentController extends Controller
     {
         $agents = User::where(['role_id'=>2])->pluck('first_name', 'id');
         $input = $request->all();
-        if($input['data']){
-            $repayments = LoanRepayment::whereIn('id', $input['data']);
-
-
-        }
+        
         if(!empty($input)){
             $condition = [];
             if($request->till_date){
@@ -192,7 +213,7 @@ class LoanRepaymentController extends Controller
         $input['total_amount'] = $amount;
         
         $collect = Collection::create($input);
-        $loan_repayment = LoanRepayment::where(['id'=>$id])->with(['Loan', 'Collection'])->first();
+        $loan_repayment = LoanRepayment::where(['id'=>$id])->with(['Loan'=>['Account', 'Agent'], 'Collection'])->first();
         $report = new Report();
         $report->generate($loan_repayment);
 

@@ -28,10 +28,8 @@ class ReportController extends Controller
     {
         $input = $request->all();
         if($input){
-            $request->validate([
-                'from' => 'required',
-                'to_date' => 'required',
-            ]);
+          
+            $condition = [];
             $conditions = [];
             if(isset($request->agent_id)){
                 $conditions['agent_id'] = $request->agent_id;
@@ -39,16 +37,23 @@ class ReportController extends Controller
             if(isset($request->account_id)){
                 $conditions['account_id'] = $request->account_id;
             }
+            if(isset($request->from)){
+                $fromDate = Carbon::createFromFormat('d/m/Y', $request->from);
+                $condition[] = ['loan_date', '>=' , $fromDate];
+            }
+
+            if(isset($request->to_date)){
+                $toDate = Carbon::createFromFormat('d/m/Y', $request->to_date);
+                $condition[] = ['loan_date', '<=' , $toDate];
+            }
     
     
     
-            $fromDate = Carbon::createFromFormat('d/m/Y', $request->from);
-            $toDate = Carbon::createFromFormat('d/m/Y', $request->to_date);
+          
+           
            
     
-            $loans = Loan::whereDate('loan_date', '>=' , $fromDate)
-                            ->whereDate('loan_date', '<=' , $fromDate)
-                            ->orWhereDate('loan_date', '<=' , $toDate)
+            $loans = Loan::where($condition)
                             ->where($conditions)->whereColumn('final_amount', '>','paid_amount')->with(['Agent', 'Account'=>['Area']])->get();
 
             $pdf = PDF::loadView('report.loan_print', compact('loans'));
@@ -79,21 +84,23 @@ class ReportController extends Controller
    
     public function report(Request $request)
     {
-        $request->validate([
-            'from_date' => 'required',
-            'to_date' => 'required',
-        ]);
+        $condition = [];
+           
+        if(isset($request->from)){
+            $fromDate = Carbon::createFromFormat('d/m/Y', $request->from_date);
+            $condition[] = ['payment_date', '>=' , $fromDate];
+        }
 
-        $fromDate = Carbon::createFromFormat('d/m/Y', $request->from_date);
-        $toDate = Carbon::createFromFormat('d/m/Y', $request->to_date);
+        if(isset($request->to_date)){
+            $toDate = Carbon::createFromFormat('d/m/Y', $request->to_date);
+            $condition[] = ['payment_date', '<=' , $toDate];
+        }
         $conditions = [];
         if(isset($request->loan_id)){
             $conditions['loan_id'] = $request->loan_id;
         }
 
-        $collections = Collection::whereDate('payment_date', '>=' , $fromDate)
-                                    ->whereDate('payment_date', '<=' , $fromDate)
-                                    ->orWhereDate('payment_date', '<=' , $toDate)->with(['LoanRepayment'=>['Loan'=>['Agent', 'Account'=>['Area']]]])->get();
+        $collections = Collection::where($condition)->with(['LoanRepayment'=>['Loan'=>['Agent', 'Account'=>['Area']]]])->get();
 
         $pdf = PDF::loadView('report.collection_print', compact('collections'));
         $pdf->setPaper('A4', 'portrait');

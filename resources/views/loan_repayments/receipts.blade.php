@@ -63,14 +63,14 @@ use Carbon\Carbon;
             <tr>
                 <td width="50%">
                     <b>Loan No: </b>{{ $loan_repayment->loan->loan_no }} <br>
-                    <b>Name: </b>{{ $loan_repayment->loan->name }} <br>
-                    <b>Phone No: </b>{{ $loan_repayment->loan->mobile_no }} <br>
+                    <b>Name: </b>{{ $loan_repayment->loan->account->name }} <br>
+                    <b>Phone No: </b>{{ $loan_repayment->loan->account->mobile_no }} <br>
                     <b>Agent Name: </b>{{ $loan_repayment->loan->agent->full_name }} <br>
                 </td>
                 <td width="50%">
                     <b>Loan Date: </b>{{ $loan_repayment->loan->loan_date }} <br>
-                    <b>Contact Person: </b>{{ $loan_repayment->loan->contact_person }} <br>
-                    <b>Contact Person No: </b>{{ $loan_repayment->loan->contact_person_no }} <br>
+                    <b>Contact Person: </b>{{ $loan_repayment->loan->account->contact_person }} <br>
+                    <b>Contact Person No: </b>{{ $loan_repayment->loan->account->contact_person_no }} <br>
                 </td>
 
             </tr>

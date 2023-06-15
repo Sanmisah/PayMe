@@ -70,9 +70,14 @@ use Carbon\Carbon;
                 </div>
             </div>
             </form>
+            <form method="POST" action="{{route('loan_repayments.store')}}">
+                @csrf
+                
 
             <div class="table-responsive">
                 <table class="table table-bordered tableRibb" id="dataTable" width="100%" cellspacing="0">
+                 
+                    
                     <thead>
                         <tr>
                             <th>Account No </th>
@@ -82,16 +87,17 @@ use Carbon\Carbon;
                             <th>Mobile No </th>
                             <th>Alternative Mobile No </th>
                             <th>Agent Name </th>
-                            <th>Amount</th>
+                            <th width="12%">Amount</th>
                             <th>Balance Amount</th>
                             <th>Monthly Interest</th>
                             <th width="10%">Action</th>
                         </tr>
-                    </thead>
+                    </thead>                   
                     <tbody>
                         <?php $today = Carbon::now(); ?>
                         @if(!empty($repayments))
-                        @foreach ($repayments as $repayment)
+                       
+                        @foreach ($repayments as $id=>$repayment)
                         <?php $date = Carbon::createFromFormat('d/m/Y', $repayment->payment_date); ?>
                             <tr class='{{ ($today >= $date) ? "text-danger" : "" }}'>
                                 <td>  <span>{{ $repayment->loan->account->account_no }}</span>  </td>
@@ -101,7 +107,21 @@ use Carbon\Carbon;
                                 <td>{{$repayment->loan->account->mobile_no }}</td>
                                 <td>{{$repayment->loan->account->alternative_no }}</td>
                                 <td>{{$repayment->loan->agent->full_name }}</td>
-                                <td> <span>{{ $repayment->interest_amount }}</span>  </td>
+                                <td>
+                                    <span>{{ $repayment->interest_amount }}</span> <br>
+                                    <input 
+                                        type="hidden" 
+                                        class="form-control form-control-user @error('loan_repayment_id') is-invalid @enderror" 
+                                        name="Collection[{{ $id }}][loan_repayment_id]"  
+                                        value="{{ $repayment->id }}"
+                                    >
+                                    <input 
+                                        type="text" 
+                                        class="form-control form-control-user @error('interest_received_amount') is-invalid @enderror" 
+                                        name="Collection[{{ $id }}][interest_received_amount]"  
+                                    >  
+                                   
+                                </td>
                                 <td> <span >{{ $repayment->balance_amount() }}</span>  </td>
                                 <td>{{$repayment->loan->interest_rate }}</td>
                                 <td>  
@@ -136,14 +156,15 @@ use Carbon\Carbon;
                     <tfoot>
                         <tr> 
                             <td colspan="11" align="right"> 
-                               
-                               
-                               
+                                <button type="submit" class="btn btn-primary btn-block m-2">Payment</button>  
                             </td>
                         </tr>
                     </tfoot>
                     @endif
+                    </form>
                 </table>
+                
+                </form>
                 {{ isset($repayments) ? $repayments->links() : ''}}
 
             </div>
