@@ -69,13 +69,12 @@
                             <th>Mobile No</th>
                             <th>Contact Person</th>
                             <th>Initial Loan Amount</th>
-                            <th>Loan Amount</th>
                             <th>Balance Amount</th>
                             <th width="20%">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($loans as $loan)
+                        @foreach ($loans as $loan)                     
                             <tr>
                                 <td>{{$loan->loan_no }}</td>
                                 <td>{{$loan->loan_date }}</td>
@@ -84,9 +83,12 @@
                                <td>{{$loan->Account->name }}</td>
                                <td>{{$loan->Account->mobile_no }} </td>
                                <td>{{$loan->Account->contact_person }}</td>
-                               <td>{{ $loan->final_amount }} </td>
-                               <td>{{ $loan->loan_amount }} <br> at {{ $loan->interest_rate }}% Interest Rate</td>
-                               <td>{{ $loan->balanceAmount() }}</td>
+                               <td>{{ $loan->final_amount }} at {{ $loan->interest_rate }}% Interest Rate</td>
+                               <td>
+                                    {{ $loan->balanceAmount() }} /
+                                    {{ $loan->LoanRepayments->sum('interest_amount')-$loan->LoanRepayments->sum('paid_amount') }}
+                                   
+                               </td>
                                 <td>   
                                     <div  style="display:flex;">        
                                         <a href="{{ route('loan_repayments.show', ['loan_repayment' => $loan->id]) }}" class="btn btn-primary btn-sm m-2">

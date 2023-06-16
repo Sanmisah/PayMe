@@ -8,6 +8,7 @@ use App\Models\Account;
 use App\Models\User;
 use App\Models\LoanRepayment;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -16,8 +17,9 @@ class LoanController extends Controller
     
     public function index(Request $request)
     {
+        $date = Carbon::now();
+       
         if($request->all()){
-           
             $conditions = [];
             if($request->search){
                 $conditions[] = ['name', 'like', '%'.$request->search.'%'];
@@ -32,10 +34,21 @@ class LoanController extends Controller
            
             $loans = Loan::with(['Agent', 'Account'])->whereHas('Account', function ($query) use($conditions){
                                     $query->where($conditions);
-                                })->orderBy('id', 'desc')->paginate(20);
+                                })
+                                ->with('LoanRepayments', function($q) use($date){
+                                    $q->select(DB::raw('SUM(interest_amount)'))->where('payment_date', '<=', $date)
+                                        ->whereColumn('paid_amount', '<', 'interest_amount');
+                                })
+                                ->orderBy('id', 'desc')->paginate(20);
             return view('loans.index', compact('loans'));
         }
-        $loans = Loan::with(['Agent', 'Account'])->orderBy('id', 'desc')->paginate(20);
+        $loans = Loan::with(['Agent', 'Account'])
+                        ->with('LoanRepayments', function($q) use($date){
+                            $q->where('payment_date', '<=', $date)
+                                ->whereColumn('paid_amount', '<', 'interest_amount');
+                        })->orderBy('id', 'desc')->paginate(20);
+
+       
         return view('loans.index', compact('loans'));
     }
 

@@ -179,13 +179,20 @@ class LoanRepaymentController extends Controller
     public function collections(LoanRepayment $loan_repayment)
     {
         $loan_repayment->load('Loan');
+        $date = Carbon::createFromFormat('d/m/Y', $loan_repayment->payment_date);
+
+        $loan_repayments = LoanRepayment::whereDate('payment_date', '<=', $date)
+                                         ->whereColumn('paid_amount', '<', 'interest_amount')->get();
+        $amount = $loan_repayments->sum('interest_amount') - $loan_repayments->sum('paid_amount');
         $collection = Collection::where(['loan_repayment_id'=>$loan_repayment->id])->get();
         $date = date('d/m/Y');
 
         return view('loan_repayments.collections')->with([
             'loan_repayment' => $loan_repayment,
+            'loan_repayments' => $loan_repayments,
             'collection' => $collection,
-            'date' => $date
+            'date' => $date,
+            'amount' => $amount
         ]);
         
     }
@@ -243,7 +250,7 @@ class LoanRepaymentController extends Controller
         }
         $loan->save();
 
-        return redirect()->route('loan_repayments.index')->with('success', 'Loan Repayment has been Collected');
+        return redirect()->route('loans.index')->with('success', 'Loan Repayment has been Collected');
 
 
     }

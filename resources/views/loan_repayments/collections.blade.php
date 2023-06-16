@@ -32,20 +32,22 @@
                                 <th>Name </th>
                                 <th>Agent Name </th>
                                 <th>Payment Date </th>
-                                <th>Loan Amount</th>
-                                <th>Interest Amount</th>
+                                <th>Paid Amount (INR)</th>
+                                <th>Balanced Amount(INR)</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach($loan_repayments as $repayment)
                             <tr>
-                                <td>{{$loan_repayment->loan->account->account_no }}</td>
-                                <td>{{$loan_repayment->loan->loan_no }}</td>
-                                <td>{{$loan_repayment->loan->account->name }}</td>
-                                <td>{{$loan_repayment->loan->agent->full_name }}</td>
-                                <td>{{$loan_repayment->payment_date }}</td>
-                                <td>{{$loan_repayment->loan->loan_amount }}</td>
-                                <td>{{$loan_repayment->interest_amount }}</td>
+                                <td>{{$repayment->loan->account->account_no }}</td>
+                                <td>{{$repayment->loan->loan_no }}</td>
+                                <td>{{$repayment->loan->account->name }}</td>
+                                <td>{{$repayment->loan->agent->full_name }}</td>
+                                <td>{{$repayment->payment_date }}</td>
+                                <td>{{$repayment->paid_amount }}</td>
+                                <td>{{$repayment->balance_amount() }}</td>
                             </tr>
+                            @endforeach
                         </tbody>
                     </table>
 
@@ -99,6 +101,7 @@
                             <option value="'">Please Select</option>
                             <option value="Cash">Cash</option>
                             <option value="Bank">Bank</option>
+                            <option value="UPI">UPI</option>
                         </select>
                        
                         @error('payment_mode')
@@ -126,7 +129,7 @@
                             type="number" 
                             class="form-control form-control-user @error('interest_received_amount') is-invalid @enderror" 
                             name="interest_received_amount"  
-                            default="0.00"
+                            value="{{ $amount }}"
                             id="interest"
                         >
 
@@ -183,6 +186,8 @@
 <script>
     $("#mode").change(function(){
         if($("#mode").val()== 'Bank'){
+            $("#utr").show()
+        } else  if($("#mode").val()== 'UPI'){
             $("#utr").show()
         } else {
             $("#utr").hide()
