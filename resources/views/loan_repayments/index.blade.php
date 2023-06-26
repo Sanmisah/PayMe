@@ -127,6 +127,9 @@ use Carbon\Carbon;
                                 <td>  
                                     
                                     <div class="display:none;">
+                                         <a href="{{ route('loan_repayments.show', ['loan_repayment' => $repayment->loan->account_id]) }}" class="btn btn-primary btn-sm m-2">
+                                            Loan History
+                                        </a>   
                                         @if($repayment->balance_amount() > 0)                                                                    
                                             <a href="{{ route('loan_repayments.edit', ['loan_repayment' => $repayment->id]) }}" class="btn btn-primary btn-sm m-2">
                                                 Postponed

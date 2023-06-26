@@ -98,37 +98,12 @@ class LoanRepaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($loan_id, Request $request)
+    public function show($id, Request $request)
     {
-        $agents = User::where(['role_id'=>2])->pluck('first_name', 'id');
-        $input = $request->all();
-        
-        if(!empty($input)){
-            $condition = [];
-            if($request->till_date){
-                $date = Carbon::createFromFormat('d/m/Y', $request->till_date);
-                $condition[] = ['payment_date', '<=', $date];
-            }
-            $conditions = [];
-           
-            if(!empty($input['agent_id'])){
-                $conditions['agent_id'] = $input['agent_id'];
-            }
-            $repayments = LoanRepayment::where($condition)
-                                        ->where(['loan_id'=>$loan_id])
-                                        ->whereColumn('interest_amount', '>','paid_amount')
-                                        ->with(['Loan'=>['Agent', 'Account'=>['Area']]])
-                                        ->whereRelation('Loan', $conditions)->orderBy('payment_date', 'asc')->paginate(20);
-            return view('loan_repayments.show', compact('repayments'))->with([
-                'agents' => $agents,
-            ]);
-
-        } 
-        
-        $repayments = LoanRepayment::where(['loan_id'=>$loan_id])->orderBy('payment_date', 'asc')->paginate(20);
-        return view('loan_repayments.show', compact('repayments'))->with([
-            'agents' => $agents
-        ]);
+       
+        $accounts = Account::where('id', $id)->with(['Loan'=>['Agent', 'LoanRepayments']])->first();
+        // $repayments = LoanRepayment::where(['loan_id'=>$loan_id])->orderBy('payment_date', 'asc')->paginate(20);
+        return view('loan_repayments.show', compact('accounts'));
         
     }
 
@@ -213,9 +188,7 @@ class LoanRepaymentController extends Controller
         if(!empty($input['travelling_charges'])){
             $amount += $input['travelling_charges'];
         }
-        if(!empty($input['loan_received_amount'])){
-            $amount += $input['loan_received_amount'];
-        }
+      
 
         $input['total_amount'] = $amount;
         
@@ -229,28 +202,9 @@ class LoanRepaymentController extends Controller
         
         $inputs['paid_amount'] = $amount;
         $loan_repayment->update($inputs);
-        $loan_repayments = LoanRepayment::where(['loan_id'=>$loan_repayment->loan_id])->pluck('id');
-        $values = $loan_repayments->implode(',', ' ');
+       
 
-
-        $collections = Collection::whereIn('loan_repayment_id', [$values])->get();
-
-        $paid_amount =  $collections->sum('loan_received_amount');
-        
-        $loan = Loan::where(['id'=>$loan_repayment->loan_id])->first();
-        $loan->paid_amount = $paid_amount;
-        if(!empty($input['loan_received_amount'])){
-            $loan->loan_amount =  $loan->loan_amount- $input['loan_received_amount'];   
-            $loanRepayments = LoanRepayment::where(['loan_id'=>$loan->id])->where('paid_amount',  0)->get();
-            foreach($loanRepayments as $payment){
-                $payment->interest_amount  = $loan['loan_amount']*$loan['interest_rate']/100;    
-                $payment->save();
-            }
-
-        }
-        $loan->save();
-
-        return redirect()->route('loans.index')->with('success', 'Loan Repayment has been Collected');
+        return redirect()->route('loan_repayments.show', ['loan_repayment'=>$loan_repayment->loan->account_id])->with('success', 'Loan Repayment has been Collected');
 
 
     }

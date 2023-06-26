@@ -150,22 +150,8 @@
                         @error('travelling_charges')
                             <span class="text-danger">{{$message}}</span>
                         @enderror
-                    </div>
-                  
-                    <div class="col-sm-4 mb-3 mb-sm-0">
-                        <label> Laon Received Amount </label>
-                        <input 
-                            type="text" 
-                            class="form-control form-control-user @error('loan_received_amount') is-invalid @enderror" 
-                            name="loan_received_amount"  
-                            default="0.00"
-                            id="loan"
-                        >
-
-                        @error('loan_received_amount')
-                            <span class="text-danger">{{$message}}</span>
-                        @enderror
-                    </div>
+                    </div>                  
+                   
                 </div>
               
 

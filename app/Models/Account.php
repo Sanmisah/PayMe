@@ -11,6 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Support\Str;
 use App\Models\Area;
+use App\Models\Loan;
 use Carbon\Carbon;
 
 
@@ -33,6 +34,10 @@ class Account extends Model
 
     public function Area(){
         return $this->belongsTo(Area::class);
+    }
+
+    public function Loan(){
+        return $this->hasMany(Loan::class);
     }
 
     
