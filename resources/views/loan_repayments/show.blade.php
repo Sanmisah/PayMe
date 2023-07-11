@@ -53,17 +53,18 @@ use Carbon\Carbon;
                 @if(isset($accounts->Loan))
                     @foreach($accounts->Loan as $id=>$loan)
                         <div
-                            class="tab-pane fade"
+                            class="tab-pane fade  table-responsive"
                             id="loan-{{ $id+1 }}"
                             role="tabpanel"
                             aria-labelledby="ex1-tab-{{ $id+1 }}"
                         >
-                            <table class="table table-bordered table-responsive" id="dataTable" width="100%" cellspacing="0">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
                                         <th>Loan No </th>
                                         <th>Loan Date </th>
                                         <th>Agent Name </th>
+                                        <th>Day</th>
                                         <th>Initial Loan Amount</th>
                                         <th>Balance Amount</th>
                                         <th>Balance Interest Amount</th>
@@ -74,6 +75,7 @@ use Carbon\Carbon;
                                         <td>{{$loan->loan_no }}</td>
                                         <td>{{$loan->loan_date }}</td>
                                         <td>{{$loan->Agent->first_name }}</td>
+                                        <td>{{$loan->emi_day }}</td>
                                         <td>{{ $loan->final_amount }} at {{ $loan->interest_rate }}% Interest Rate</td>
                                         <td>
                                                 {{ $loan->balanceAmount() }} 

@@ -30,20 +30,27 @@ class LoanController extends Controller
             if($request->search_mobile){
                 $conditions[] = ['mobile_no', 'like', '%'.$request->search_mobile.'%'];
             }
-            $accounts = Account::where($conditions)->with('Loan')->paginate(20);           
            
-          
-            return view('loans.index', compact('accounts'));
+            $loans = Loan::with(['Agent', 'Account'])->whereHas('Account', function ($query) use($conditions){
+                                    $query->where($conditions);
+                                })
+                                ->with('LoanRepayments', function($q) use($date){
+                                    $q->where('payment_date', '<=', $date)
+                                        ->whereColumn('paid_amount', '<', 'interest_amount');
+                                })
+                                ->orderBy('id', 'desc')->paginate(20);
+
+                                return view('loans.index', compact('loans'));
         }
-        // $loans = Loan::with(['Agent', 'Account'])
-        //                 ->with('LoanRepayments', function($q) use($date){
-        //                     $q->where('payment_date', '<=', $date)
-        //                         ->whereColumn('paid_amount', '<', 'interest_amount');
-        //                 })->orderBy('id', 'desc')->paginate(20);
+        $loans = Loan::with(['Agent', 'Account'])
+                        ->with('LoanRepayments', function($q) use($date){
+                            $q->where('payment_date', '<=', $date)
+                                ->whereColumn('paid_amount', '<', 'interest_amount');
+                        })->orderBy('id', 'desc')->paginate(20);
 
-        $accounts = Account::with('Loan')->paginate(20);
 
-        return view('loans.index', compact('accounts'));
+
+        return view('loans.index', compact('loans'));
     }
 
   

@@ -64,34 +64,38 @@
                             <th>Account No </th>
                             <th>Name (Mobile No)</th>
                             <th>Address</th>
-                            <th>Contact Person</th>
+                            <th>Agent Name</th>
+                            <th>Day</th>
                             <th>Total Loan Amount</th>
+                            <th>Balanced Interest Amount</th>
+                            <th>Monthly Interest Amount</th>
                             <th width="20%">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($accounts as $account)    
-                            @if($account->loan->sum('final_amount') > 0)                 
+                        @foreach ($loans as $loan)  
                             <tr>
-                               <td>{{$account->account_no }}</td>
-                               <td>{{$account->name }} ({{$account->mobile_no }})</td>
-                               <td>{{$account->address }} </td>
-                               <td>{{$account->contact_person }}</td>
-                               <td>{{  $account->loan->sum('final_amount') }}</td>
+                               <td>{{$loan->account->account_no }}</td>
+                               <td>{{$loan->account->name }}</td>
+                               <td>{{$loan->account->address }} <br> {{$loan->account->mobile_no }} <hr> {{ @$loan->account->contact_person }}: {{ @$loan->account->contact_person_no }}</td>
+                               <td>{{ @$loan->agent->first_name }}</td>
+                               <td>{{  $loan->emi_day }}</td>
+                               <td>{{  $loan->final_amount }}</td>
+                               <td> {{ $loan->LoanRepayments->sum('interest_amount')-$loan->LoanRepayments->sum('paid_amount') }}</td>
+                               <td>{{  $loan->final_amount*$loan->interest_rate/100 }}</td>
                               
                                 <td>   
                                     <div  style="display:flex;">        
-                                        <a href="{{ route('loan_repayments.show', ['loan_repayment' => $account->id]) }}" class="btn btn-primary btn-sm m-2">
+                                        <a href="{{ route('loan_repayments.show', ['loan_repayment' => $loan->account_id]) }}" class="btn btn-primary btn-sm m-2">
                                             Loan History
                                         </a> 
                                     </div>     
                                </td>
                            </tr>
-                           @endif
                        @endforeach
                     </tbody>
                 </table>
-                {{$accounts->links()}}
+                {{$loans->links()}}
 
             </div>
         </div>
