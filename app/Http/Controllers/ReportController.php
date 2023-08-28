@@ -143,12 +143,45 @@ class ReportController extends Controller
             
            
     
-            $repayments = LoanRepayment::whereDate('payment_date', '<=' , $date)
+            $repayment = LoanRepayment::whereDate('payment_date', '<=' , $date)
                                             ->whereColumn('interest_amount', '>','paid_amount')
-                                            ->with(['Loan'=>['Agent', 'Account'=>['Area']]])
+                                            ->with(['Loan'=>['Agent', 'Account'=>['Area']]])                                            
                                             ->whereRelation('Loan', $conditions)->get();
+
+
+            $repayments = $repayment->sortBy('Loan.agent_id');
+
+            $data = [];
+            $dt = Carbon::now();
+
+            foreach($repayments as $record){
+                if(!isset($data[$record->loan->agent_id]['agent_name'] )){
+                    $data[$record->loan->agent_id]['agent_name'] = $record->loan->Agent->first_name;
+                    
+                } 
+                if(!isset($data[$record->loan->agent_id][$record->loan_id]['acount_no'])){
+                    $data[$record->loan->agent_id][$record->loan_id]['account_no'] = $record->loan->account->account_no;
+                    $data[$record->loan->agent_id][$record->loan_id]['day'] = $record->loan->emi_day;
+                    $data[$record->loan->agent_id][$record->loan_id]['name'] = $record->loan->account->name;
+                    $data[$record->loan->agent_id][$record->loan_id]['address'] = $record->loan->account->address;                    
+                } 
+                $dates = Carbon::createFromFormat('d/m/Y', $record->payment_date);
+                if(!isset($data[$record->loan->agent_id][$record->loan_id]['last'])){
+                    $data[$record->loan->agent_id][$record->loan_id]['last'] = 0;
+                }
+                if($dt->isSameMonth($dates)){
+                    $data[$record->loan->agent_id][$record->loan_id]['current'] = $record->interest_amount; 
+                } else {
+                    $data[$record->loan->agent_id][$record->loan_id]['last'] += $record->interest_amount; 
+
+                }
+               
+               
+            }
+
+            
     
-            $pdf = PDF::loadView('report.repayment_print', compact('repayments'));
+            $pdf = PDF::loadView('report.repayment_print', compact('data', 'date'));
             $pdf->setPaper('A4', 'portrait');
             $pdf->render();
     
