@@ -14,7 +14,7 @@ use Illuminate\Support\Str;
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Report</h1>
+        <h1 class="h3 mb-0 text-gray-800">Collection Report</h1>
        
     </div>
 
@@ -32,7 +32,7 @@ use Illuminate\Support\Str;
 
             <div class="form-group row m-2">
                 <div class="col-sm-3 mb-3 mb-sm-0">
-                    <label>From</label>
+                    <label>From</label> 
                     <input
                         type="text"
                         class="form-control form-control @error('from_date') is-invalid @enderror"
@@ -67,16 +67,15 @@ use Illuminate\Support\Str;
                         <span class="text-danger">{{$message}}</span>
                     @enderror
                 </div>    -->
-                
-            </div> 
-            <div class="form-group row">
                 <div class="col-md-12">
                     {{-- Save Button --}} 
                     <button type="submit" class="btn btn-success btn-user btn-block">
                         Show
                     </button>
                 </div>
-            </div>
+                
+            </div> 
+            
         </form>               
         </div>       
     </div>

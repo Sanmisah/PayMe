@@ -141,7 +141,7 @@ use Carbon\Carbon;
                                                         @endif
                                                         @if($repayment->log)
                                                                 <?php $data = json_decode($repayment->log); ?>
-                                                                <a href="#" class="btn btn-info btn-sm m-2 log" data-toggle="modal" data-target="#Modal" alt="{{ $repayment->log }}">
+                                                                <a href="#" class="btn btn-info btn-sm m-2 log" data-toggle="modal" data-target="#Modal" alt="{{ $repayment->log }}" title="{{ $repayment->reason }}">
                                                                     Log
                                                                 </a>     
                                                         @endif          
@@ -172,9 +172,60 @@ use Carbon\Carbon;
           
         </div>
     </div>
+
+    <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Loan Repayment Log</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                    <label>New Date: &nbsp; &nbsp; </label><span id="newDate"></span> <br>
+                    <label>Old Date: &nbsp; &nbsp; </label><span id="oldDate"></span> <br>
+                    <label>Reason: &nbsp; &nbsp; </label><span id="reason"></span> <br>
+                    <label>Older Log: &nbsp; </label><span id="olderLog"></span> <br>
+
+                    </div>
+                  
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+    </div>
    
 
 </div>
 
 
+@endsection
+
+@section('scripts')
+<script>
+    $(document).ready(function(){
+       
+        $(".log").click(function(){
+            data = $(this).attr('alt');
+            title = $(this).attr('title');
+            log = JSON.parse(data);
+            $("#reason").text(title)
+            $('#newDate').text(log['new_date']);
+            $('#oldDate').text(log['old_date']);
+            oldLog = JSON.parse(log['old_record']);
+            $('#olderLog').text(oldLog['old_date']);
+
+           
+
+        });
+       
+       
+    });
+</script>
 @endsection

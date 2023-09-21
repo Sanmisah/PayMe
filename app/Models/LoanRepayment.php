@@ -52,5 +52,17 @@ class LoanRepayment extends Model
     {
         return $this->interest_amount - $this->paid_amount;
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function(LoanRepayment $payment)
+        {
+            if ($payment->forceDeleting) {
+                $payment->Collection()->detach();
+            }
+        });
+    }
     
 }

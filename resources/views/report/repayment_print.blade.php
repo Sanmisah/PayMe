@@ -93,7 +93,30 @@
             <?php $i = 1; ?>
 
         @endforeach
+        @else
+        <table width="100%">
+                <tr>
+                    <td width="30%"> &nbsp;</td>
+                    <td><h3 align="center"> No Records</h3>   </td>
+                    <td width="30%"> <h3 align="right">Till Date: <?= $date->format('d/m/Y') ?></h3></td>
+                </tr>
+            </table> <br>
+          
+
+            <table class="item" width="100%"  cellpadding="5" border='1px'>
+                <thead>
+                    <tr>
+                        <th>Account No</th>
+                        <th>Collection Day</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Till Last Month</th>
+                        <th>Current Month</th>
+                    </tr>
+                </thead>
+            </table>
         @endif
+
         
 
 

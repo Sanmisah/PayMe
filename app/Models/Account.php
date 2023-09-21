@@ -40,5 +40,16 @@ class Account extends Model
         return $this->hasMany(Loan::class);
     }
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function(Account $account)
+        {
+            if ($account->forceDeleting) {
+                $account->Loan()->detach();
+            }
+        });
+    }
     
 }

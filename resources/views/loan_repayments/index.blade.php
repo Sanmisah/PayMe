@@ -51,23 +51,40 @@ use Carbon\Carbon;
                         <span class="text-danger">{{$message}}</span>
                     @enderror
                 </div>
-                <div class="col-sm-3 mb-3 mb-sm-0">
-                    <label>Agent Name</label>
-                    <select name="agent_id" class="form-control form-control-user @error('agent_id') is-invalid @enderror" >
-                        <option value="">Please Select</option>
-                        @foreach ($agents as $agent)
-                            <option value="{{ $agent->id }}">{{ $agent->full_name }}</option>
-                        @endforeach
-                    </select>
+                    @hasrole('Admin')
+                    <div class="col-sm-3 mb-3 mb-sm-0">
+                        <label><span style="color:red;">*</span>Agent</label>
 
-                    @error('agent_id')
-                        <span class="text-danger">{{$message}}</span>
-                    @enderror
-                </div>
+                        <select name="agent_id" class="form-control form-control-user @error('agent_id') is-invalid @enderror" >
+                            <option value="">Please Select</option>
+                            @foreach ($agents as $id=>$agent)
+                                <option value="{{ $agent->id }}">{{ $agent->first_name }}</option>
+                            @endforeach
+                        </select>
+
+                        @error('agent_id')
+                            <span class="text-danger">{{$message}}</span>
+                        @enderror
+                    </div> 
+                    @endhasrole    
+                    @if(auth()->user()->roles->pluck('name')->first() != 'Admin')
+                    <div class="col-sm-3 mb-3 mb-sm-0">
+                        <label>Agent</label>
+                        <select name="agent_id" class="form-control form-control-user @error('agent_id') is-invalid @enderror" >
+                            <option value="{{ Auth::user()->id }}">{{ Auth::user()->full_name  }}</option>
+                        </select>
+
+                        @error('agent_id')
+                            <span class="text-danger">{{$message}}</span>
+                        @enderror
+                    </div> 
+                    @endif     
                 <div class="col-sm-3 mb-3 mb-sm-0">
                     <label>  &nbsp;</label> 
                     <button type="submit" class="btn btn-success btn-user btn-block">Search</button>
                 </div>
+
+             
             </div>
             </form>
             <form method="POST" action="{{route('loan_repayments.store')}}">

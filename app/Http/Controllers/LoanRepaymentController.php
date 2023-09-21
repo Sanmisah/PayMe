@@ -157,16 +157,18 @@ class LoanRepaymentController extends Controller
         $date = Carbon::createFromFormat('d/m/Y', $loan_repayment->payment_date);
 
         $loan_repayments = LoanRepayment::whereDate('payment_date', '<=', $date)
+                                        ->where('loan_id', $loan_repayment->loan_id)
                                          ->whereColumn('paid_amount', '<', 'interest_amount')->get();
         $amount = $loan_repayments->sum('interest_amount') - $loan_repayments->sum('paid_amount');
         $collection = Collection::where(['loan_repayment_id'=>$loan_repayment->id])->get();
-        $date = date('d/m/Y');
+        $today = date('d/m/Y');
 
         return view('loan_repayments.collections')->with([
             'loan_repayment' => $loan_repayment,
             'loan_repayments' => $loan_repayments,
             'collection' => $collection,
-            'date' => $date,
+            'date' => $loan_repayment->payment_date,
+            'today'=> $today,
             'amount' => $amount
         ]);
         
@@ -179,29 +181,80 @@ class LoanRepaymentController extends Controller
             'payment_date' => 'required',
             'interest_received_amount' => 'required|numeric',
             'payment_mode' => 'required',
-        ]);    
-        $input['loan_repayment_id'] = $id;
+        ]); 
+        $date = Carbon::createFromFormat('d/m/Y', $request->date);
+        $loan_repayments = LoanRepayment::whereDate('payment_date', '<=', $date)
+                                         ->where('loan_id', $id)
+                                         ->whereColumn('paid_amount', '<', 'interest_amount')->get();
+                                         
+        $totalAmount = $request->interest_received_amount;
+        foreach($loan_repayments as $payments){
+            if($totalAmount == 0){
+                $loan_repayment = LoanRepayment::where(['id'=>$payments->id])->with(['Loan'=>['Account', 'Agent'], 'Collection'])->first();
+                break;
+            }
+           
+            $data = [];
+            $payable = $payments->interest_amount - $payments->paid_amount;
+            if($totalAmount > $payable){
+                $amountInterest = $payable;
+                $totalAmount -= $payable;
+            } else {
+                $amountInterest = $totalAmount;
+                $totalAmount -= $amountInterest;
+            }
+            $data['total_amount'] = $amountInterest;
 
-        $amount = 0;
-        $amount += $input['interest_received_amount'];
+            if($loan_repayments->last() == $payments){               
+                if($request->travelling_charges){
+                    $data['travelling_charges'] = $request->travelling_charges;
+                    $data['total_amount'] += $request->travelling_charges;
+                }   
+                if($totalAmount > 0){
+                    $data['total_amount'] += $totalAmount;
+                    $data['loan_received_amount'] = $totalAmount;
 
-        if(!empty($input['travelling_charges'])){
-            $amount += $input['travelling_charges'];
+                }      
+               
+                
+            } 
+            
+            $data['loan_repayment_id'] = $payments->id;
+            $loan_id = $payments->loan_id;
+            $data['payment_date'] = $request->payment_date;
+            $data['interest_received_amount'] = $amountInterest;            
+            $data['payment_mode'] = $request->payment_mode ? $request->payment_mode : 'Cash';
+            $collect = Collection::create($data);
+            $loan_repayment = LoanRepayment::where(['id'=>$payments->id])->with(['Loan'=>['Account', 'Agent'], 'Collection'])->first();
+            $report = new Report();
+            $report->generate($loan_repayment);
+
+            $collection = Collection::where(['loan_repayment_id'=>$payments->id])->get();
+            $amount = $collection->sum('interest_received_amount');
+            
+            $inputs['paid_amount'] = $amount;
+            $loan_repayment->update($inputs);
+
         }
-      
+        if($totalAmount > 0){
+            $loan = Loan::find($loan_id);
+            $loan->paid_amount += $totalAmount;
+            $loan->loan_amount -= $totalAmount;
 
-        $input['total_amount'] = $amount;
-        
-        $collect = Collection::create($input);
-        $loan_repayment = LoanRepayment::where(['id'=>$id])->with(['Loan'=>['Account', 'Agent'], 'Collection'])->first();
-        $report = new Report();
-        $report->generate($loan_repayment);
+            $loan->update();
 
-        $collection = Collection::where(['loan_repayment_id'=>$id])->get();
-        $amount = $collection->sum('interest_received_amount');
-        
-        $inputs['paid_amount'] = $amount;
-        $loan_repayment->update($inputs);
+            $interestAmount = $loan->loan_amount*$loan->interest_rate/100;
+            $loanRepayments = LoanRepayment::where(['loan_id'=>$loan->id])->whereDate('payment_date', '>', $date)->get();
+            foreach($loanRepayments as $repayment){
+                $repayment->interest_amount = $interestAmount;
+                $repayment->update();
+            }
+
+           
+    
+
+        }
+       
        
 
         return redirect()->route('loan_repayments.show', ['loan_repayment'=>$loan_repayment->loan->account_id])->with('success', 'Loan Repayment has been Collected');

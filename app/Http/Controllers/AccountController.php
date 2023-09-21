@@ -34,6 +34,7 @@ class AccountController extends Controller
         $input = $request->all();
         $request->validate([
             'account_no'=>'required',
+            'area_id'=>'required',
             'name'=>'required',
             'mobile_no'=>'required|numeric|digits:10',
             'contact_person'=>'required',

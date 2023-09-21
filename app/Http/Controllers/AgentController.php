@@ -29,8 +29,8 @@ class AgentController extends Controller
         $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',
+            'email'  => 'required|unique:users,email',
             'mobile_number' => 'required|numeric|digits:10',
-            'email' => 'required|email',
             'alternative_no' => 'numeric|digits:10',
             'password' => 'required',
         ]);
@@ -62,10 +62,10 @@ class AgentController extends Controller
         $input = $request->all();
         $request->validate([
             'first_name' => 'required',
+            'email'  => 'required|unique:users,email,'.$agent->id.',id',
             'last_name' => 'required',
             'mobile_number' => 'required|numeric|digits:10',
             'alternative_no' => 'numeric|digits:10',
-            'email' => 'required|email',
         ]);
 
         $agent->update($input);

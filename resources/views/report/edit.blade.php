@@ -14,7 +14,7 @@ use Illuminate\Support\Str;
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Report</h1>
+        <h1 class="h3 mb-0 text-gray-800">Loan Report</h1>
        
     </div>
 
@@ -55,11 +55,13 @@ use Illuminate\Support\Str;
                         <span class="text-danger">{{$message}}</span>
                     @enderror
                 </div> 
+                @hasrole('Admin')
                 <div class="col-sm-3 mb-3 mb-sm-0">
-                    <label>Agent Name</label>
+                    <label><span style="color:red;">*</span>Agent</label>
+
                     <select name="agent_id" class="form-control form-control-user @error('agent_id') is-invalid @enderror" >
                         <option value="">Please Select</option>
-                        @foreach ($agents as $agent)
+                        @foreach ($agents as $id=>$agent)
                             <option value="{{ $agent->id }}">{{ $agent->full_name }}</option>
                         @endforeach
                     </select>
@@ -67,7 +69,20 @@ use Illuminate\Support\Str;
                     @error('agent_id')
                         <span class="text-danger">{{$message}}</span>
                     @enderror
-                </div>
+                </div> 
+                @endhasrole    
+                @if(auth()->user()->roles->pluck('name')->first() != 'Admin')
+                <div class="col-sm-3 mb-3 mb-sm-0">
+                    <label>Agent</label>
+                    <select name="agent_id" class="form-control form-control-user @error('agent_id') is-invalid @enderror" >
+                        <option value="{{ Auth::user()->id }}">{{ Auth::user()->full_name  }}</option>
+                    </select>
+
+                    @error('agent_id')
+                        <span class="text-danger">{{$message}}</span>
+                    @enderror
+                </div> 
+                @endif     
                 <div class="col-sm-3 mb-3 mb-sm-0">
                     <label>Account</label>
                     <select class="form-control  @error('account_id') is-invalid @enderror" name="account_id" id="pet">
@@ -81,7 +96,7 @@ use Illuminate\Support\Str;
                     @enderror
                 </div>   
            
-                <div class="col-md-3">
+                <div class="col-md-12">
                     <label> &nbsp;</label>
                     {{-- Save Button --}} 
                     <button type="submit" class="btn btn-success btn-user btn-block">

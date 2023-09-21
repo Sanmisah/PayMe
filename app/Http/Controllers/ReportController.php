@@ -85,8 +85,9 @@ class ReportController extends Controller
     public function report(Request $request)
     {
         $condition = [];
-           
-        if(isset($request->from)){
+
+                 
+        if(isset($request->from_date)){
             $fromDate = Carbon::createFromFormat('d/m/Y', $request->from_date);
             $condition[] = ['payment_date', '>=' , $fromDate];
         }
@@ -95,10 +96,7 @@ class ReportController extends Controller
             $toDate = Carbon::createFromFormat('d/m/Y', $request->to_date);
             $condition[] = ['payment_date', '<=' , $toDate];
         }
-        $conditions = [];
-        if(isset($request->loan_id)){
-            $conditions['loan_id'] = $request->loan_id;
-        }
+       
 
         $collections = Collection::where($condition)->with(['LoanRepayment'=>['Loan'=>['Agent', 'Account'=>['Area']]]])->get();
 
@@ -169,8 +167,11 @@ class ReportController extends Controller
                 if(!isset($data[$record->loan->agent_id][$record->loan_id]['last'])){
                     $data[$record->loan->agent_id][$record->loan_id]['last'] = 0;
                 }
+                if(!isset($data[$record->loan->agent_id][$record->loan_id]['current'])){
+                    $data[$record->loan->agent_id][$record->loan_id]['current'] = 0;
+                }
                 if($dt->isSameMonth($dates)){
-                    $data[$record->loan->agent_id][$record->loan_id]['current'] = $record->interest_amount; 
+                    $data[$record->loan->agent_id][$record->loan_id]['current'] += $record->interest_amount; 
                 } else {
                     $data[$record->loan->agent_id][$record->loan_id]['last'] += $record->interest_amount; 
 

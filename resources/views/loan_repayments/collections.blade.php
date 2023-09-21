@@ -21,7 +21,7 @@
             <h6 class="m-0 font-weight-bold text-primary">Edit loan</h6>
         </div>
         <div class="card-body">
-            <form method="POST" action="{{route('loan_repayments.collected', ['id'=>$loan_repayment->id])}}">
+            <form method="POST" action="{{route('loan_repayments.collected', ['id'=>$loan_repayment->loan_id])}}">
                 @csrf
                 <div class="table-responsive">
                     <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">
@@ -84,11 +84,13 @@
                     <div class="col-sm-4 mb-3 mb-sm-0">
                     <label><span style="color:red;">*</span> Date</label>
                         <input 
+                            type="hidden"  value="{{ $date }}" name="date">
+                        <input 
                             type="text" 
                             class="form-control form-control-user @error('payment_date') is-invalid @enderror" 
                             name="payment_date" 
                             id="paymentDate"
-                            value="{{ $date }}"
+                            value="{{ $today }}"
                         >
 
                         @error('payment_date')
@@ -98,7 +100,7 @@
                     <div class="col-sm-4 mb-3 mb-sm-0">
                         <label><span style="color:red;">*</span> Payment Mode</label>
                         <select name="payment_mode" id="mode" class="form-control">
-                            <option value="'">Please Select</option>
+                            <option value="">Please Select</option>
                             <option value="Cash">Cash</option>
                             <option value="Bank">Bank</option>
                             <option value="UPI">UPI</option>

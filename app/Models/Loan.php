@@ -66,7 +66,16 @@ class Loan extends Model
             $max = ($loans) ? Str::substr($loans->loan_no, -1) : 0;
             $loan->loan_no = 'L'.str_pad($max + 1,5,0, STR_PAD_LEFT);
         });
+
+        static::deleting(function(Loan $loan)
+        {
+            if ($laon->forceDeleting) {
+                $loan->LoanRepayments()->detach();
+            }
+        });
     }
+
+   
 
   
 }

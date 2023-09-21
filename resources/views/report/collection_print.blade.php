@@ -47,7 +47,7 @@
     <body>
 
         <div>
-            <h2 align="center"><strong> Report </strong></h2>
+            <h2 align="center"><strong>Collection Report </strong></h2>
         </div>	
 		<br>
 		
@@ -55,14 +55,20 @@
 			<thead >
                 <tr  border='1px'>
                     <th  border='1px'>Collection Date</th>
+                    <th  border='1px'>Payment Mode</th>
                     <th  border='1px'> Amount Received against Interest (INR)</th>
                     <th  border='1px'>Travelling Charges (INR)</th>
                     <th  border='1px'> Amount Received against Loan (INR)</th>
-                    <th  border='1px'>Payment Mode</th>
                     <th  border='1px'>Total Amount (INR)</th>
                 </tr>
             </thead>
             <tbody>
+                <?php 
+                    $total = 0;
+                    $totalInterest = 0;
+                    $totalTravelling = 0;
+                    $totalLoan = 0;
+                ?>
                 {{ $account_no = ' '; }}
                  @if(!empty($collections)) 
                  @foreach ($collections as $collection)
@@ -77,15 +83,30 @@
                  @endif
                 <tr  border='1px'>
                     <td  border='1px'> {{ $collection->payment_date }}  </td>
+                    <td  border='1px'>{{ $collection->payment_mode }} {{ ($collection->payment_mode == 'Babk') ? $collection->utr_no : '' }}</td>
                     <td  border='1px' align="right"> {{ $collection->interest_received_amount }}  </td>
                     <td  border='1px' align="right"> {{ $collection->travelling_charges ? $collection->travelling_charges : '' }}  </td>
                     <td  border='1px' align="right"> {{ $collection->loan_received_amount ? $collection->loan_received_amount : '' }}  </td>
-                    <td  border='1px'>{{ $collection->payment_mode }} {{ ($collection->payment_mode == 'Babk') ? $collection->utr_no : '' }}</td>
                     <td  border='1px' align="right"> {{ $collection->total_amount }}  </td>
                 </tr>
+                <?php 
+                    $total += $collection->total_amount;
+                    $totalInterest += $collection->interest_received_amount;
+                    $totalTravelling += $collection->travelling_charges;
+                    $totalLoan += $collection->loan_received_amount;
+                ?>
                 @endforeach
                 @endif
             </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2" align="right"><b>Total Amount</b></td>
+                    <td align="right"><b>{{ $totalInterest }}</b></td>
+                    <td align="right"><b>{{ $totalTravelling }}</b></td>
+                    <td align="right"><b>{{ $totalLoan }}</b></td>
+                    <td align="right"><b>{{ $total }}</b></td>
+                </tr>
+            </tfoot>
 		</table>
 		
 

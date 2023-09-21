@@ -47,7 +47,7 @@
     <body>
 
         <div>
-            <h2 align="center"><strong> Report </strong></h2>
+            <h2 align="center"><strong> Loan Report </strong></h2>
         </div>	
 		<br>
 		
@@ -64,6 +64,8 @@
                 </tr>
             </thead>
             <tbody>
+                <?php $totalAmount = 0; 
+                 $totalPaid = 0; ?>
                  @if(!empty($loans)) 
                  @foreach ($loans as $loan)
                 
@@ -76,9 +78,22 @@
                     <td  border='1px' align="right"> {{ $loan->paid_amount }}  </td>
                     <td  border='1px' align="right"> {{ $loan->interest_rate }}  </td>
                 </tr>
+                
+                <?php 
+                    $totalAmount += $loan->final_amount; 
+                    $totalPaid += $loan->paid_amount;
+                 ?>
                 @endforeach
                 @endif
             </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4" align="right"><b>Total Amount</b></td>
+                    <td align="right"><b>{{ $totalAmount }}</b></td>
+                    <td align="right"><b>{{ $totalPaid }}</b></td>
+                    <td align="right"></td>
+                </tr>
+            </tfoot>
 		</table>
 		
 
